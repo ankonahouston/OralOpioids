@@ -1,10 +1,12 @@
 
-#' Title
+#' CanadianBigData: TODO description, e.g., Obtain the lastes information on Morphine administration provided by HealthCanada
 #' @docType package
 #' @name CanadianBigData
   NULL
   #> NULL
-#' @param filelocation The location on your system where you want the dataset to be downloaded. The default location is the documents folder
+#' @param filelocation The directory on your system where you want the dataset to be downloaded.
+#' If "", filelocation will be set to the download path within the CanadianBigData
+#' package installation directory.
 #'
 #' @return The dataset showing all details of all oral opioids available for sale as authorized by HealthCanada
 
@@ -14,46 +16,54 @@
 
 
 #' @export
-load_Big_Data_form <- function(filelocation = "~"){
-  # library (devtools)
-  #
-  # usethis::use_pipe()
-  # usethis::use_package("readxl")
-  # usethis::use_package("forcats")
-  # usethis::use_package("tidyverse", type = "depends")
-  # #devtools::document()
-  # usethis::use_package("ggplot2")
-  # usethis::use_package("tidyr")
-  # usethis::use_package("purrr")
-  # usethis::use_package("readr")
-  # usethis::use_package("openxlsx")
-  # usethis::use_package("magrittr")
-  # usethis::use_package("dplyr")
-  # usethis::use_package("rvest")
-  # usethis::use_package("xml2")
-  # usethis::use_package("openxlsx")
-content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
-tables <- content %>%
-      rvest::html_table(fill = TRUE)
-second_table <- tables[[2]]
-second_table_date <- second_table$`Last Updated`[[1]]
+##TODEL: I would change the default path since it will be different when you run it from RStudio and R, Windows or Mac
+load_Big_Data_form <- function(filelocation = ""){
 
-second_table_date <- as.Date(as.character(second_table_date))
+  if (filelocation == ""){
+    filelocation <- paste0(system.file(package = "CanadianBigData"),"/download")
+  }
+
+  ## if the filelocation directory does not exist, create it
+  if (!dir.exists(filelocation)){
+    dir.create(filelocation, recursive = TRUE)
+  }
+
+  ## 1) Get HealthCanada data date and compare with Big_Data_form date
+  ## Get HealthCanada data date ------------------------
+  content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
+  tables <- content %>%
+        rvest::html_table(fill = TRUE)
+  second_table <- tables[[2]]
+  second_table_date <- second_table$`Last Updated`[[1]]
+
+  second_table_date <- as.Date(as.character(second_table_date))
+
+  ## Get Big_Data_form date ---------------------
+  ## List all files in filelocation
+  downloaded_files <- list.files(filelocation)
+  ## check if Big_Data_form file is among files
+  Big_Data_form_file_indices <- grep("Big_Data_form",downloaded_files)
+  if (length(Big_Data_form_file_indices) > 0) {
+    list_of_dates <- NULL
+    for (i in Big_Data_form_file_indices){
+      list_of_dates <- c(list_of_dates,substr(downloaded_files[i],1,10))
+      ##TODO test if all files are older
+      as.Date(as.character(substr(downloaded_files[i],1,10))) > second_table_date
+    }
+  }
 
 
+  temp <- tempfile()
+  download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
+  schedule <- read.csv(unz(temp, "schedule.txt"), header= F)
+  drug <- read.csv(unz(temp, "drug.txt"), header= F)
+  ther <- read.csv(unz(temp, "ther.txt"), header= F)
+  status <- read.csv(unz(temp, "status.txt"), header= F)
+  ingred <- read.csv(unz(temp, "ingred.txt"), header= F)
+  route <- read.csv(unz(temp, "route.txt"), header= F)
+  form <- read.csv(unz(temp, "form.txt"), header= F)
 
-
-      temp <- tempfile ()
-      download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
-      schedule <- read.csv(unz(temp, "schedule.txt"), header= F)
-      drug <- read.csv(unz(temp, "drug.txt"), header= F)
-      ther <- read.csv(unz(temp, "ther.txt"), header= F)
-      status <- read.csv(unz(temp, "status.txt"), header= F)
-      ingred <- read.csv(unz(temp, "ingred.txt"), header= F)
-      route <- read.csv(unz(temp, "route.txt"), header= F)
-      form <- read.csv(unz(temp, "form.txt"), header= F)
-
-      unlink(temp)
+  unlink(temp)
 
 
       download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",temp)
@@ -619,7 +629,7 @@ second_table_date <- as.Date(as.character(second_table_date))
       Big_Data <- unique(Big_Data)
       Big_Data_form <- merge(Big_Data,form,by= "ID")
 
-openxlsx::write.xlsx(Big_Data_form[,c(2:8,19,10:16)],paste0(filelocation,"/Opioids_List_",format(second_table_date,"%b_%Y"),".xlsx"))
+openxlsx::write.xlsx(Big_Data_form[,c(2:8,19,10:16)],paste0(filelocation,"/",second_table_date,"_Big_Data_form.xlsx"))
 return(Big_Data_form)
 }
 
