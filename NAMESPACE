@@ -2,6 +2,7 @@
 
 export("%>%")
 export(MED)
+export(Opioid)
 export(load_Big_Data_form)
 import(dplyr)
 import(forcats)
