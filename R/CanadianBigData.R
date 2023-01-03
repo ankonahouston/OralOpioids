@@ -84,6 +84,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
     ## get Big data form from downloaded_files[i]
     HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",downloaded_files[i])
     HealthCanada_Opioid_Table <- openxlsx::read.xlsx(HealthCanada_Opioid_Table_path)
+    HealthCanada_Opioid_Table$DIN <- readr::parse_number(HealthCanada_Opioid_Table$DIN)
     out <- as.data.frame(HealthCanada_Opioid_Table)
     comment(out) <- c(msg = out_msg, path = HealthCanada_Opioid_Table_path)
 
@@ -104,6 +105,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
       ## get Big data form from latest_Big_data_from_file
       HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",latest_Big_data_from_file)
       HealthCanada_Opioid_Table <- openxlsx::read.xlsx(HealthCanada_Opioid_Table_path)
+      HealthCanada_Opioid_Table$DIN <- readr::parse_number(HealthCanada_Opioid_Table$DIN)
       out <- as.data.frame(HealthCanada_Opioid_Table)
       comment(out) <- c(msg = out_msg, path = HealthCanada_Opioid_Table_path)
 
@@ -699,14 +701,15 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
       ## Write the new table
       HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",second_table_date,"_HealthCanada_Opioid_Table.xlsx")
       openxlsx::write.xlsx(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table_path)
+      HealthCanada_Opioid_Table$DIN <- readr::parse_number(HealthCanada_Opioid_Table$DIN)
       out <- as.data.frame(HealthCanada_Opioid_Table)
-      comment(out) <- c(msg = out_msg,path=HealthCanada_Opioid_Table_path)
+      comment(out) <- c(msg = out_msg,path=HealthCanada_Opioid_Table_path,Disclaimer= "Not a substitute for medical advise")
 
-      ## TODO Should old HealthCanada_Opioid_Table.xlsx files be deleted? Alternative, ask user if they should be deleted
+
     }
   }
   return(out)
-  #TODO: change output list
+  #TODO: Add website link in disclaimer
 }
 
 #'Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
