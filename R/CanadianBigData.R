@@ -85,7 +85,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
     HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",downloaded_files[i])
     HealthCanada_Opioid_Table <- openxlsx::read.xlsx(HealthCanada_Opioid_Table_path)
     out <- as.data.frame(HealthCanada_Opioid_Table)
-    attributes(out) <- list(msg = out_msg, path = HealthCanada_Opioid_Table_path)
+    comment(out) <- c(msg = out_msg, path = HealthCanada_Opioid_Table_path)
 
     #TODO: add a disclaimer to the attributes
   } else {
@@ -105,7 +105,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
       HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",latest_Big_data_from_file)
       HealthCanada_Opioid_Table <- openxlsx::read.xlsx(HealthCanada_Opioid_Table_path)
       out <- as.data.frame(HealthCanada_Opioid_Table)
-      attributes(out) <- list(msg = out_msg, path = HealthCanada_Opioid_Table_path)
+      comment(out) <- c(msg = out_msg, path = HealthCanada_Opioid_Table_path)
 
     } else {
 
@@ -700,7 +700,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
       HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",second_table_date,"_HealthCanada_Opioid_Table.xlsx")
       openxlsx::write.xlsx(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table_path)
       out <- as.data.frame(HealthCanada_Opioid_Table)
-      attributes(out) <- list(msg = out_msg,path=HealthCanada_Opioid_Table_path)
+      comment(out) <- c(msg = out_msg,path=HealthCanada_Opioid_Table_path)
 
       ## TODO Should old HealthCanada_Opioid_Table.xlsx files be deleted? Alternative, ask user if they should be deleted
     }
