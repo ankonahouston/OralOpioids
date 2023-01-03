@@ -1,5 +1,5 @@
 
-#' CanadianOpioids: TODO description, e.g., Obtain the lastes information on Morphine administration provided by HealthCanada
+#' CanadianOralOpioids: TODO description, e.g., Obtain the latest information on Morphine administration provided by HealthCanada
 #' #TODO find better package name with opiod in name
 #' @docType package
 #' @name CanadianBigData
@@ -9,7 +9,7 @@
 ## TODO change title and description
 #'Obtain the latest Opiod data from Health Canada
 #'
-#'\code{load_Big_Data_form} compares the date of the local Big_Data_form and compares
+#'\code{load_HealthCanada_Opioid_Table} compares the date of the local HealthCanada_Opioid_Table and compares
 #'it with the latest date of data provided Health Canada. In case the local file is outdated,
 #'an updated file will be generated.
 #'
@@ -21,18 +21,18 @@
 #'
 #'@return The function returns a Boolean for the update status. Attributes
 #'include a status message (msg). The dataset showing all details of all oral
-#'opioids available for sale as authorized by HealthCanada (Big_data_form),
+#'opioids available for sale as authorized by HealthCanada (HealthCanada_Opioid_Table),
 #'and its save path (path).
 
 #' @import ggplot2 tidyr readr purrr forcats magrittr plyr readr readxl reshape2 stringr openxlsx rvest xml2 dplyr
 #'
-#' @examples load_Big_Data_form()
+#' @examples load_HealthCanada_Opioid_Table()
 
 
 #' @export
-##TODEL: I would change the default path since it will be different when you run it from RStudio and R, Windows or Mac
-## TODO: Find better name than Big_data_form and replace everywhere
-load_Big_Data_form <- function(filelocation = "", verbose = TRUE){
+
+
+load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
 
   if (filelocation == ""){
     filelocation <- paste0(system.file(package = "CanadianBigData"),"/download")
@@ -43,7 +43,7 @@ load_Big_Data_form <- function(filelocation = "", verbose = TRUE){
     dir.create(filelocation, recursive = TRUE)
   }
 
-  ## 1) Get HealthCanada data date and compare with Big_Data_form date
+  ## 1) Get HealthCanada data date and compare with HealthCanada_Opioid_Table date
   ## Get HealthCanada data date ------------------------
   content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
   tables <- content %>%
@@ -53,57 +53,60 @@ load_Big_Data_form <- function(filelocation = "", verbose = TRUE){
 
   second_table_date <- as.Date(as.character(second_table_date))
 
-  ## Get Big_Data_form date ---------------------
-  Big_Data_form_is_old <- TRUE
+  ## Get HealthCanada_Opioid_Table date ---------------------
+  HealthCanada_Opioid_Table_is_old <- TRUE
   ## List all files in filelocation
   downloaded_files <- list.files(filelocation)
-  ## check if Big_Data_form file is among files
-  Big_Data_form_file_indices <- grep("Big_Data_form",downloaded_files)
-  if (length(Big_Data_form_file_indices) > 0) {
+  ## check if HealthCanada_Opioid_Table file is among files
+  HealthCanada_Opioid_Table_file_indices <- grep("HealthCanada_Opioid_Table",downloaded_files)
+  if (length(HealthCanada_Opioid_Table_file_indices) > 0) {
     list_of_dates <- NULL
-    list_of_Big_Data_form_files <- NULL
-    for (i in Big_Data_form_file_indices){
+    list_of_HealthCanada_Opioid_Table_files <- NULL
+    for (i in HealthCanada_Opioid_Table_file_indices){
       file_date <- as.Date(as.character(substr(downloaded_files[i],1,10)))
       list_of_dates <- c(list_of_dates,file_date)
-      list_of_Big_Data_form_files <- c(list_of_Big_Data_form_files,downloaded_files[i])
+      list_of_HealthCanada_Opioid_Table_files <- c(list_of_HealthCanada_Opioid_Table_files,downloaded_files[i])
       ##if a file is has the same or a newer date than the second_table_date
-      ##the Big_Data_form is up to date
+      ##the HealthCanada_Opioid_Table is up to date
       if (!second_table_date > file_date){
-        Big_Data_form_is_old <- FALSE
+        HealthCanada_Opioid_Table_is_old <- FALSE
         break
       }
     }
   }
 
-  if (Big_Data_form_is_old == FALSE){
-    out <- TRUE
-    out_msg <- c(out_msg,"The Big_Data_form is up to date.")
+  if (HealthCanada_Opioid_Table_is_old == FALSE){
+
+    out_msg <- "The HealthCanada_Opioid_Table is up to date."
     ## if verbose is set to TRUE the message will be printed (cat) in the console
     if (verbose) cat(utils::tail(out_msg,1), sep="\n")
 
     ## get Big data form from downloaded_files[i]
-    Big_Data_form_path <- paste0(filelocation,"/",downloaded_files[i])
-    Big_Data_form <- openxlsx::read.xlsx(Big_Data_form_path)
-    attributes(out) <- list(msg = out_msg, path = Big_Data_form_path,
-                            Big_Data_form = Big_Data_form)
+    HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",downloaded_files[i])
+    HealthCanada_Opioid_Table <- openxlsx::read.xlsx(HealthCanada_Opioid_Table_path)
+    out <- as.data.frame(HealthCanada_Opioid_Table)
+    attributes(out) <- list(msg = out_msg, path = HealthCanada_Opioid_Table_path)
+
+    #TODO: add a disclaimer to the attributes
   } else {
     downloadq <- utils::menu(c("Y", "N"),
-                             title=paste("Your Big_Data_form is outdated. Do you want to download ",
+                             title=paste("Your HealthCanada_Opioid_Table is outdated. Do you want to download ",
                                           "the latest data from Health Canada? (y/n)")) == 1
     if (downloadq == FALSE){
       latest_date <- max(list_of_dates)
-      latest_Big_data_from_file <- list_of_Big_Data_form_files[latest_date == list_of_dates]
-      out <- FALSE
-      out_msg <- c(out_msg,paste0("No updated files were downloaded. ",
-                   "The latest Big_data_from was from ",latest_date))
+      latest_Big_data_from_file <- list_of_HealthCanada_Opioid_Table_files[latest_date == list_of_dates]
+
+      out_msg <- paste0("No updated files were downloaded. ",
+                   "The latest Big_data_from was from ",latest_date)
       ## if verbose is set to TRUE the message will be printed (cat) in the console
       if (verbose) cat(utils::tail(out_msg,1), sep="\n")
 
       ## get Big data form from latest_Big_data_from_file
-      Big_Data_form_path <- paste0(filelocation,"/",latest_Big_data_from_file)
-      Big_Data_form <- openxlsx::read.xlsx(Big_Data_form_path)
-      attributes(out) <- list(msg = out_msg, path = Big_Data_form_path,
-                              Big_Data_form = Big_Data_form)
+      HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",latest_Big_data_from_file)
+      HealthCanada_Opioid_Table <- openxlsx::read.xlsx(HealthCanada_Opioid_Table_path)
+      out <- as.data.frame(HealthCanada_Opioid_Table)
+      attributes(out) <- list(msg = out_msg, path = HealthCanada_Opioid_Table_path)
+
     } else {
 
       temp <- tempfile()
@@ -680,52 +683,53 @@ load_Big_Data_form <- function(filelocation = "", verbose = TRUE){
 
 
       Big_Data <- unique(Big_Data)
-      Big_Data_form <- merge(Big_Data,form,by= "ID")
+      HealthCanada_Opioid_Table <- merge(Big_Data,form,by= "ID")
 
       ## generate output --------
 
-      out <- TRUE
-      out_msg <- c(out_msg,paste0("The Big_Data_form was successfully updated to ",
-                                  second_table_date,"."))
-      ## TODO Why is the Big_data_form restricted?
+
+      out_msg <- paste0("The HealthCanada_Opioid_Table was successfully updated to ",
+                                  second_table_date,".")
+
       ## TODO add date as additional column?
-      Big_Data_form <- Big_Data_form[,c(2:8,19,10:16)]
+      HealthCanada_Opioid_Table <- HealthCanada_Opioid_Table[,c(2:8,19,10:16)]
 
       ## if verbose is set to TRUE the message will be printed (cat) in the console
       if (verbose) cat(utils::tail(out_msg,1), sep="\n")
       ## Write the new table
-      Big_Data_form_path <- paste0(filelocation,"/",second_table_date,"_Big_Data_form.xlsx")
-      openxlsx::write.xlsx(Big_Data_form,Big_Data_form_path)
-      attributes(out) <- list(msg = out_msg,path=Big_Data_form_path,
-                              Big_Data_form = Big_Data_form)
+      HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",second_table_date,"_HealthCanada_Opioid_Table.xlsx")
+      openxlsx::write.xlsx(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table_path)
+      out <- as.data.frame(HealthCanada_Opioid_Table)
+      attributes(out) <- list(msg = out_msg,path=HealthCanada_Opioid_Table_path)
 
-      ## TODO Should old Big_data_form.xlsx files be deleted? Alternative, ask user if they should be deleted
+      ## TODO Should old HealthCanada_Opioid_Table.xlsx files be deleted? Alternative, ask user if they should be deleted
     }
   }
   return(out)
+  #TODO: change output list
 }
 
 #'Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
 #'
-#'\code{MED} retrieves the Morphine Equivalent Dose from the Big_Data_form.
+#'\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 #'
 #'@param Drug_ID A numeric value for the DIN. Exclude all zeros in front
-#'@param Big_Data_form Health Canada opiod dataset which can be loaded by using
-#'the \code{load_Big_Data_form()} function.
+#'@param HealthCanada_Opioid_Table Health Canada opiod dataset which can be loaded by using
+#'the \code{load_HealthCanada_Opioid_Table()} function.
 #'
 #' @return MED: Morphine Equivalent Dose
 
 #' @import dplyr
 #'
-#' @examples MED(108316, Big_data_form)
+#' @examples MED(108316, HealthCanada_Opioid_Table)
 
 
 #' @export
 ##TODO return source with information (website and date)
-MED <- function(Drug_ID,Big_Data_form){
+MED <- function(Drug_ID,HealthCanada_Opioid_Table){
   ##TODO add source to output
-  if (Drug_ID %in% Big_Data_form$DIN)
-  {a <- subset(Big_Data_form,DIN== Drug_ID)
+  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
+  {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
   return(a$MED_per_dispensing_unit)}
   else return(0)
 }
@@ -733,23 +737,24 @@ MED <- function(Drug_ID,Big_Data_form){
 ##TODO change description
 #'Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
 #'
-#'\code{MED} retrieves the Morphine Equivalent Dose from the Big_Data_form.
+#'\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 #'
 #'@param Drug_ID A numeric value for the DIN. Exclude all zeros in front
-#'@param Big_Data_form Health Canada opiod dataset which can be loaded by using
-#'the \code{load_Big_Data_form()} function.
+#'@param HealthCanada_Opioid_Table Health Canada opiod dataset which can be loaded by using
+#'the \code{load_HealthCanada_Opioid_Table()} function.
 #'
 #' @return MED: Morphine Equivalent Dose
 
 #' @import dplyr
 #'
-#' @examples Opioid(108316, Big_data_form)
+#' @examples Opioid(108316, HealthCanada_Opioid_Table)
+#' TODO: test example with HealthCanada_Opioid_Table
 
 
 #' @export
-Opioid <- function(Drug_ID,Big_Data_form){
-  if (Drug_ID %in% Big_Data_form$DIN)
-  {a <- subset(Big_Data_form,DIN== Drug_ID)
+Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
+  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
+  {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
   return(a$Opioid)}
   else print("Could not be calculated")
 }
@@ -757,21 +762,21 @@ Opioid <- function(Drug_ID,Big_Data_form){
 ##TODO change description
 #'Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
 #'
-#'\code{MED} retrieves the Morphine Equivalent Dose from the Big_Data_form.
+#'\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 #'
 #'@param Drug_ID A numeric value for the DIN. Exclude all zeros in front
-#'@param Big_Data_form Health Canada opiod dataset which can be loaded by using
-#'the \code{load_Big_Data_form()} function.
+#'@param HealthCanada_Opioid_Table Health Canada opiod dataset which can be loaded by using
+#'the \code{load_HealthCanada_Opioid_Table()} function.
 #'
 #' @return MED: Morphine Equivalent Dose
 
 #' @import dplyr
 #'
-#' @examples Brand(108316, Big_Data_form)
+#' @examples Brand(108316, HealthCanada_Opioid_Table)
 
-Brand <- function(Drug_ID,Big_Data_form){
-  if (Drug_ID %in% Big_Data_form$DIN)
-  {a <- subset(Big_Data_form,DIN== Drug_ID)
+Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
+  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
+  {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
   return(a$Brand)}
   else print("Could not be calculated")
 }
@@ -780,20 +785,20 @@ Brand <- function(Drug_ID,Big_Data_form){
 ##TODO change description
 #'Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
 #'
-#'\code{MED} retrieves the Morphine Equivalent Dose from the Big_Data_form.
+#'\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 #'
 #'@param Drug_ID A numeric value for the DIN. Exclude all zeros in front
-#'@param Big_Data_form Health Canada opiod dataset which can be loaded by using
-#'the \code{load_Big_Data_form()} function.
+#'@param HealthCanada_Opioid_Table Health Canada opiod dataset which can be loaded by using
+#'the \code{load_HealthCanada_Opioid_Table()} function.
 #'
 #' @return MED: Morphine Equivalent Dose
 
 #' @import dplyr
 #'
-#' @examples MED_50(108316, Big_Data_form)
-MED_50 <- function(Drug_ID,Big_Data_form){
-  if (Drug_ID %in% Big_Data_form$DIN)
-  {a <- subset(Big_Data_form,DIN== Drug_ID)
+#' @examples MED_50(108316, HealthCanada_Opioid_Table)
+MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
+  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
+  {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
   return(a$`No_tabs/ml assuming 50 MED limit per day`)}
   else print("Could not be calculated")
 }
@@ -801,21 +806,21 @@ MED_50 <- function(Drug_ID,Big_Data_form){
 ##TODO change description
 #'Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
 #'
-#'\code{MED} retrieves the Morphine Equivalent Dose from the Big_Data_form.
+#'\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 #'
 #'@param Drug_ID A numeric value for the DIN. Exclude all zeros in front
-#'@param Big_Data_form Health Canada opiod dataset which can be loaded by using
-#'the \code{load_Big_Data_form()} function.
+#'@param HealthCanada_Opioid_Table Health Canada opiod dataset which can be loaded by using
+#'the \code{load_HealthCanada_Opioid_Table()} function.
 #'
 #' @return MED: Morphine Equivalent Dose
 
 #' @import dplyr
 #'
-#' @examples MED_90(108316, Big_Data_form)
+#' @examples MED_90(108316, HealthCanada_Opioid_Table)
 
-MED_90 <- function(Drug_ID,Big_Data_form){
-  if (Drug_ID %in% Big_Data_form$DIN)
-  {a <- subset(Big_Data_form,DIN== Drug_ID)
+MED_90 <- function(Drug_ID,HealthCanada_Opioid_Table){
+  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
+  {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
   return(a$`No_tabs/ml assuming 90 MED limit per day`)}
   else print("Could not be calculated")
 }

@@ -4,20 +4,20 @@
 \alias{Brand}
 \title{Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN}
 \usage{
-Brand(Drug_ID, Big_Data_form)
+Brand(Drug_ID, HealthCanada_Opioid_Table)
 }
 \arguments{
 \item{Drug_ID}{A numeric value for the DIN. Exclude all zeros in front}
 
-\item{Big_Data_form}{Health Canada opiod dataset which can be loaded by using
-the \code{load_Big_Data_form()} function.}
+\item{HealthCanada_Opioid_Table}{Health Canada opiod dataset which can be loaded by using
+the \code{load_HealthCanada_Opioid_Table()} function.}
 }
 \value{
 MED: Morphine Equivalent Dose
 }
 \description{
-\code{MED} retrieves the Morphine Equivalent Dose from the Big_Data_form.
+\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 }
 \examples{
-Brand(108316, Big_Data_form)
+Brand(108316, HealthCanada_Opioid_Table)
 }

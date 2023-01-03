@@ -3,5 +3,5 @@
 \docType{package}
 \name{CanadianBigData}
 \alias{CanadianBigData}
-\title{CanadianBigData: TODO description, e.g., Obtain the lastes information on Morphine administration provided by HealthCanada
+\title{CanadianOralOpioids: TODO description, e.g., Obtain the latest information on Morphine administration provided by HealthCanada
 #TODO find better package name with opiod in name}
