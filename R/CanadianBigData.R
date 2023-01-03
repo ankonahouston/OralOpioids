@@ -1,5 +1,5 @@
 
-#' CanadianBigData: TODO description, e.g., Obtain the lastes information on Morphine administration provided by HealthCanada
+#' CanadianOpioids: TODO description, e.g., Obtain the lastes information on Morphine administration provided by HealthCanada
 #' #TODO find better package name with opiod in name
 #' @docType package
 #' @name CanadianBigData
