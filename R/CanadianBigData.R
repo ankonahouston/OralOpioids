@@ -17,6 +17,7 @@
 #' If "", filelocation will be set to the download path within the CanadianBigData
 #' package installation directory.
 # @param country String. Either "ca" (Canada), or "usa" (USA). Default: \code{"ca"}.
+#' @param no_download Logical. If set to TRUE, no downloads will be executed and no user input is required. Default: \code{FALSE}.
 #' @param verbose Logical. Indicates whether messages will be printed in the console. Default: \code{TRUE}.
 #'
 #'
@@ -27,11 +28,11 @@
 
 #' @import ggplot2 tidyr readr purrr forcats magrittr plyr readr readxl reshape2 stringr openxlsx rvest xml2 dplyr
 #'
-#' @examples load_HealthCanada_Opioid_Table()
+#' @examples load_HealthCanada_Opioid_Table(no_download = TRUE)
 
 
 #' @export
-load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
+load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE){
 
   if (filelocation == ""){
     filelocation <- paste0(system.file(package = "CanadianBigData"),"/download")
@@ -91,14 +92,18 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
 
     #TODO: add a disclaimer to the attributes
   } else {
-    if (HealthCanada_Opioid_Table_files_exist == FALSE){
-      downloadq <- utils::menu(c("Y", "N"),
-                               title=paste("No HealthCanada_Opioid_Tables are currently in the filelocation. Do you want to download ",
-                                           "the latest data from Health Canada? (y/n)")) == 1
-    } else {
-      downloadq <- utils::menu(c("Y", "N"),
-                             title=paste("Your HealthCanada_Opioid_Table is outdated. Do you want to download ",
-                                          "the latest data from Health Canada? (y/n)")) == 1
+    if (no_download == TRUE){
+      downloadq <- FALSE
+    } else{
+      if (HealthCanada_Opioid_Table_files_exist == FALSE){
+        downloadq <- utils::menu(c("Y", "N"),
+                                 title=paste("No HealthCanada_Opioid_Tables are currently in the filelocation. Do you want to download ",
+                                             "the latest data from Health Canada? (y/n)")) == 1
+      } else {
+        downloadq <- utils::menu(c("Y", "N"),
+                               title=paste("Your HealthCanada_Opioid_Table is outdated. Do you want to download ",
+                                            "the latest data from Health Canada? (y/n)")) == 1
+      }
     }
 
     if (downloadq == FALSE && HealthCanada_Opioid_Table_files_exist == FALSE){
@@ -742,7 +747,10 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
 
 #' @import dplyr
 #'
-#' @examples MED(108316, HealthCanada_Opioid_Table)
+#' @examples
+#'
+#' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#' MED(108316, HealthCanada_Opioid_Table)
 
 
 #' @export
@@ -768,10 +776,11 @@ MED <- function(Drug_ID,HealthCanada_Opioid_Table){
 
 #' @import dplyr
 #'
-#' @examples Opioid(108316, HealthCanada_Opioid_Table)
-#' TODO: test example with HealthCanada_Opioid_Table
-
-
+#' @examples
+#'
+#' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#' Opioid(108316, HealthCanada_Opioid_Table)
+#'
 #' @export
 Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
@@ -793,8 +802,11 @@ Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
 
 #' @import dplyr
 #'
-#' @examples Brand(108316, HealthCanada_Opioid_Table)
-
+#' @examples
+#'
+#' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#' Brand(108316, HealthCanada_Opioid_Table)
+#' @export
 Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
   {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
@@ -813,10 +825,14 @@ Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
 #'the \code{load_HealthCanada_Opioid_Table()} function.
 #'
 #' @return MED: Morphine Equivalent Dose
-
 #' @import dplyr
 #'
-#' @examples MED_50(108316, HealthCanada_Opioid_Table)
+#' @examples
+#'
+#' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#' MED_50(108316, HealthCanada_Opioid_Table)
+#'
+#' @export
 MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
   {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
@@ -837,8 +853,11 @@ MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
 
 #' @import dplyr
 #'
-#' @examples MED_90(108316, HealthCanada_Opioid_Table)
-
+#' @examples
+#'
+#' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#' MED_90(108316, HealthCanada_Opioid_Table)
+#' @export
 MED_90 <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
   {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)

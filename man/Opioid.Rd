@@ -19,5 +19,7 @@ MED: Morphine Equivalent Dose
 \code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
 }
 \examples{
+HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
 Opioid(108316, HealthCanada_Opioid_Table)
+TODO: test example with HealthCanada_Opioid_Table
 }

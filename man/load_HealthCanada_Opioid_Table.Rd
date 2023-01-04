@@ -4,12 +4,18 @@
 \alias{load_HealthCanada_Opioid_Table}
 \title{Obtain the latest Opiod data from Health Canada}
 \usage{
-load_HealthCanada_Opioid_Table(filelocation = "", verbose = TRUE)
+load_HealthCanada_Opioid_Table(
+  filelocation = "",
+  no_download = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
-\item{filelocation}{The directory on your system where you want the dataset to be downloaded.
+\item{filelocation}{String. The directory on your system where you want the dataset to be downloaded.
 If "", filelocation will be set to the download path within the CanadianBigData
 package installation directory.}
+
+\item{no_download}{Logical. If set to TRUE, no downloads will be executed and no user input is required. Default: \code{FALSE}.}
 
 \item{verbose}{Logical. Indicates whether messages will be printed in the console. Default: \code{TRUE}.}
 }
@@ -25,5 +31,5 @@ it with the latest date of data provided Health Canada. In case the local file i
 an updated file will be generated.
 }
 \examples{
-load_HealthCanada_Opioid_Table()
+load_HealthCanada_Opioid_Table(no_download = TRUE)
 }
