@@ -2,22 +2,26 @@
 % Please edit documentation in R/CanadianBigData.R
 \name{MED_90}
 \alias{MED_90}
-\title{Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN}
+\title{#'Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
+\code{MED_90} gives us the maximum number of units (e.g. tablets or capsules for solid oral opioids and no. of millilitres for liquid oral opioids that are safe assuming a Morphine equivalent Dose of 90.)}
 \usage{
 MED_90(Drug_ID, HealthCanada_Opioid_Table)
 }
 \arguments{
 \item{Drug_ID}{A numeric value for the DIN. Exclude all zeros in front}
 
-\item{HealthCanada_Opioid_Table}{Health Canada opiod dataset which can be loaded by using
-the \code{load_HealthCanada_Opioid_Table()} function.}
+\item{HealthCanada_Opioid_Table}{Health Canada opioid dataset which can be loaded by using
+the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.}
 }
 \value{
-MED: Morphine Equivalent Dose
+no. of units to reach 90 MED
 }
 \description{
-\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
+#'Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
+\code{MED_90} gives us the maximum number of units (e.g. tablets or capsules for solid oral opioids and no. of millilitres for liquid oral opioids that are safe assuming a Morphine equivalent Dose of 90.)
 }
 \examples{
+
+HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
 MED_90(108316, HealthCanada_Opioid_Table)
 }

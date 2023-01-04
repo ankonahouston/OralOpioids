@@ -2,7 +2,7 @@
 % Please edit documentation in R/CanadianBigData.R
 \name{load_HealthCanada_Opioid_Table}
 \alias{load_HealthCanada_Opioid_Table}
-\title{Obtain the latest Opiod data from Health Canada}
+\title{Obtain the latest Opioid data from Health Canada}
 \usage{
 load_HealthCanada_Opioid_Table(
   filelocation = "",
@@ -18,6 +18,8 @@ package installation directory.}
 \item{no_download}{Logical. If set to TRUE, no downloads will be executed and no user input is required. Default: \code{FALSE}.}
 
 \item{verbose}{Logical. Indicates whether messages will be printed in the console. Default: \code{TRUE}.}
+
+\item{country}{String. Either "ca" (Canada), or "usa" (USA). Default: \code{"ca"}.}
 }
 \value{
 The function returns a Boolean for the update status. Attributes

@@ -2,24 +2,25 @@
 % Please edit documentation in R/CanadianBigData.R
 \name{Opioid}
 \alias{Opioid}
-\title{Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN}
+\title{Get the Opioid content from Health Canada by using the DIN}
 \usage{
 Opioid(Drug_ID, HealthCanada_Opioid_Table)
 }
 \arguments{
 \item{Drug_ID}{A numeric value for the DIN. Exclude all zeros in front}
 
-\item{HealthCanada_Opioid_Table}{Health Canada opiod dataset which can be loaded by using
-the \code{load_HealthCanada_Opioid_Table()} function.}
+\item{HealthCanada_Opioid_Table}{Health Canada opioid dataset which can be loaded by using
+the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.}
 }
 \value{
-MED: Morphine Equivalent Dose
+Opioid content
 }
 \description{
-\code{MED} retrieves the Morphine Equivalent Dose from the HealthCanada_Opioid_Table.
+\code{Opioid} retrieves the Opioid content from the HealthCanada_Opioid_Table.
 }
 \examples{
+
 HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
 Opioid(108316, HealthCanada_Opioid_Table)
-TODO: test example with HealthCanada_Opioid_Table
+
 }

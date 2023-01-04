@@ -1,10 +1,10 @@
-Package: CanadianBigData
-Title: What the Package Does (One Line, Title Case)
+Package: CanadianOralOpioids
+Title: It provides details of all Oral Opioids authorized for sale by Health Canada
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Banerjee", "Ankona", , "ankonanagpur@gmail.com", role = c("aut", "cre"),
+           "Strickler","Ankona", , "erik.strickler@bcm.edu", role = "aut")
+Description: This package provides details of all oral opioids authorized for sale by Health Canada. Please note no way should output from this package be a substitute for medical advise. All medications should only be consumed on prescription from a licensed healthcare provider.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
