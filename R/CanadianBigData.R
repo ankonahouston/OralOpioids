@@ -757,9 +757,16 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 ##TODO return source with information (website and date)
 MED <- function(Drug_ID,HealthCanada_Opioid_Table){
   ##TODO add source to output
-  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
-  {a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
-  return(a$MED_per_dispensing_unit)}
+  if (Drug_ID %in% HealthCanada_Opioid_Table$DIN){
+    a <- subset(HealthCanada_Opioid_Table,DIN== Drug_ID)
+    ## TODO change MED_per_dispensing_unit to numeric?
+    # out_MED_per_dispensing_unit <- suppressWarnings(as.numeric(a$MED_per_dispensing_unit))
+    # if (is.na(out_MED_per_dispensing_unit)){
+    #   out_MED_per_dispensing_unit <- a$MED_per_dispensing_unit
+    # }
+    # return(out_MED_per_dispensing_unit)
+    return(a$MED_per_dispensing_unit)
+  }
   else return(0)
 }
 
