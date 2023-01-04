@@ -13,10 +13,11 @@
 #'it with the latest date of data provided Health Canada. In case the local file is outdated,
 #'an updated file will be generated.
 #'
-#' @param filelocation The directory on your system where you want the dataset to be downloaded.
+#' @param filelocation String. The directory on your system where you want the dataset to be downloaded.
 #' If "", filelocation will be set to the download path within the CanadianBigData
 #' package installation directory.
-#'@param verbose Logical. Indicates whether messages will be printed in the console. Default: \code{TRUE}.
+# @param country String. Either "ca" (Canada), or "usa" (USA). Default: \code{"ca"}.
+#' @param verbose Logical. Indicates whether messages will be printed in the console. Default: \code{TRUE}.
 #'
 #'
 #'@return The function returns a Boolean for the update status. Attributes
@@ -30,8 +31,6 @@
 
 
 #' @export
-
-
 load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
 
   if (filelocation == ""){
@@ -55,11 +54,13 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
 
   ## Get HealthCanada_Opioid_Table date ---------------------
   HealthCanada_Opioid_Table_is_old <- TRUE
+  HealthCanada_Opioid_Table_files_exist <- FALSE
   ## List all files in filelocation
   downloaded_files <- list.files(filelocation)
   ## check if HealthCanada_Opioid_Table file is among files
   HealthCanada_Opioid_Table_file_indices <- grep("HealthCanada_Opioid_Table",downloaded_files)
   if (length(HealthCanada_Opioid_Table_file_indices) > 0) {
+    HealthCanada_Opioid_Table_files_exist <- TRUE
     list_of_dates <- NULL
     list_of_HealthCanada_Opioid_Table_files <- NULL
     for (i in HealthCanada_Opioid_Table_file_indices){
@@ -90,10 +91,27 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", verbose = TRUE){
 
     #TODO: add a disclaimer to the attributes
   } else {
-    downloadq <- utils::menu(c("Y", "N"),
+    if (HealthCanada_Opioid_Table_files_exist == FALSE){
+      downloadq <- utils::menu(c("Y", "N"),
+                               title=paste("No HealthCanada_Opioid_Tables are currently in the filelocation. Do you want to download ",
+                                           "the latest data from Health Canada? (y/n)")) == 1
+    } else {
+      downloadq <- utils::menu(c("Y", "N"),
                              title=paste("Your HealthCanada_Opioid_Table is outdated. Do you want to download ",
                                           "the latest data from Health Canada? (y/n)")) == 1
-    if (downloadq == FALSE){
+    }
+
+    if (downloadq == FALSE && HealthCanada_Opioid_Table_files_exist == FALSE){
+      out_msg <- "No updated files were downloaded."
+      ## if verbose is set to TRUE the message will be printed (cat) in the console
+      if (verbose) cat(utils::tail(out_msg,1), sep="\n")
+
+      ## return empty variables
+      HealthCanada_Opioid_Table_path <- ""
+      HealthCanada_Opioid_Table <- ""
+      out <- ""
+      comment(out) <- c(msg = out_msg, path = HealthCanada_Opioid_Table_path)
+    } else if (downloadq == FALSE && HealthCanada_Opioid_Table_files_exist == TRUE){
       latest_date <- max(list_of_dates)
       latest_Big_data_from_file <- list_of_HealthCanada_Opioid_Table_files[latest_date == list_of_dates]
 
