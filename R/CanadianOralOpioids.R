@@ -30,7 +30,10 @@
 #'a disclaimer, and the source for the retrieved data (source_url_data and source_url_dosing).
 #'
 
-#' @import ggplot2 tidyr readr purrr forcats magrittr plyr readr readxl reshape2 stringr openxlsx rvest xml2 dplyr
+#' @import ggplot2 tidyr readr purrr forcats readxl reshape2 stringr openxlsx  xml2
+#' @rawNamespace import(dplyr, except = rename)
+#' @importFrom  plyr rename
+#' @importFrom  rvest html_table
 #'
 #' @examples load_HealthCanada_Opioid_Table(no_download = TRUE)
 
@@ -787,9 +790,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 #'the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.
 #'
 #' @return MED: Morphine Equivalent Dose
-
-#' @import dplyr
-#'
+#' @rawNamespace import(dplyr, except = rename)
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
@@ -821,9 +822,7 @@ MED <- function(Drug_ID,HealthCanada_Opioid_Table){
 #'the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.
 #'
 #' @return Opioid content
-
-#' @import dplyr
-#'
+#' @rawNamespace import(dplyr, except = rename)
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
@@ -846,8 +845,7 @@ Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
 #'the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.
 #'
 #' @return Brand name
-
-#' @import dplyr
+#' @rawNamespace import(dplyr, except = rename)
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
@@ -871,8 +869,7 @@ Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
 #'the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.
 #'
 #' @return no. of units to reach 50 MED
-
-#' @import dplyr
+#' @rawNamespace import(dplyr, except = rename)
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
@@ -900,10 +897,7 @@ MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
 #'the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.
 #'
 #' @return no. of units to reach 90 MED
-
-
-#' @import dplyr
-#'
+#' @rawNamespace import(dplyr, except = rename)
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
