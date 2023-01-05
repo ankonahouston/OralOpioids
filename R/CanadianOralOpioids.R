@@ -307,7 +307,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioids_1<- subset (Opioids_1,Opioids_1$Opioids_1$Ingred!="CHLORZOXAZONE")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="PHENOBARBITAL")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="METHOCARBAMOL")
-      Opioids_1$Caffeine <- ifelse (grepl("CAFFEINE", Opioids_1$Opioids_1$Ingred), "1", "0")
+      Opioids_1$Caffeine <- ifelse (grepl("CAFFEINE", Opioids_1$Ingred), "1", "0")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="BUTALBITAL")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="CAFFEINE")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="ACETYLSALICYLIC ACID")
@@ -329,7 +329,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="ATROPINE SULFATE")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="SCOPOLAMINE HYDROBROMIDE")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="IBUPROFEN")
-      Opioids_1 <- subset (Opioids_1, Caffeine=="0")
+      Opioids_1 <- subset (Opioids_1,Opioids_1$Caffeine=="0")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="SQUILL")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="POTASSIUM CITRATE")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="IPECAC")
@@ -376,9 +376,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
 
       status <- status%>%
-        dplyr::arrange(ID,desc(Date))%>%
-        dplyr::group_by(ID)%>%
-        dplyr::mutate(ranks=order(ID))
+        dplyr::arrange(status$ID,desc(status$Date))%>%
+        dplyr::group_by(status$ID)%>%
+        dplyr::mutate(ranks=order(status$ID))
 
       #status <- status %>% dplyr::mutate(ranks=row_number())
 
@@ -433,9 +433,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
 
       Big_1 <- Big_1%>%
-        dplyr::arrange(DIN)%>%
-        dplyr::group_by(DIN)%>%
-        dplyr::mutate(ranks=order(DIN))
+        dplyr::arrange(Big_1$DIN)%>%
+        dplyr::group_by(Big_1$DIN)%>%
+        dplyr::mutate(ranks=order(Big_1$DIN))
 
 
       Big_2 <- reshape2::dcast (Big_1,DIN~ ranks, value.var= "MED_per_dispensing_unit")
@@ -637,9 +637,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Big_Data <- unique(Big_Data)
 
       Big_Data <- Big_Data%>%
-        dplyr::arrange(DIN)%>%
-        dplyr::group_by(DIN)%>%
-        dplyr::mutate(ranks=order(DIN))
+        dplyr::arrange(Big_Data$DIN)%>%
+        dplyr::group_by(Big_Data$DIN)%>%
+        dplyr::mutate(ranks=order(Big_Data$DIN))
 
       Previous_DIN <- as.data.frame(Big_1[,2])
       Previous_DIN <- unique(Previous_DIN)
@@ -659,7 +659,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       #Big_Data <- Big_Data[,c(1:11)]
 
       DIN_count <- Big_Data %>%
-        dplyr::group_by(DIN,MED_per_dispensing_unit) %>%
+        dplyr::group_by(Big_Data$DIN,Big_Data$MED_per_dispensing_unit) %>%
         dplyr::tally()
 
 
@@ -676,9 +676,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       colnames(Big_Data1) <- c("DIN","Opioid")
 
       Big_Data1 <- Big_Data1 %>%
-        dplyr::arrange (DIN,Opioid)%>%
-        dplyr::group_by(DIN)%>%
-        dplyr::mutate(rank=order(DIN))
+        dplyr::arrange (Big_Data1$DIN,Opioid)%>%
+        dplyr::group_by(Big_Data1$DIN)%>%
+        dplyr::mutate(rank=order(Big_Data1$DIN))
 
 
       Big_Data2 <- reshape2::dcast(Big_Data1, DIN ~ rank, value.var="Opioid")
@@ -697,9 +697,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       colnames(Big_Data1) <- c("DIN","Route")
 
       Big_Data1 <- Big_Data1 %>%
-        dplyr::arrange (DIN,Route)%>%
-        dplyr::group_by(DIN)%>%
-        dplyr::mutate(rank=order(DIN))
+        dplyr::arrange (Big_Data1$DIN,Big_Data1$Route)%>%
+        dplyr::group_by(Big_Data1$DIN)%>%
+        dplyr::mutate(rank=order(Big_Data1$DIN))
 
 
 
