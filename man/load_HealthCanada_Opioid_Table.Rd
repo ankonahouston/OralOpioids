@@ -18,14 +18,11 @@ package installation directory.}
 \item{no_download}{Logical. If set to TRUE, no downloads will be executed and no user input is required. Default: \code{FALSE}.}
 
 \item{verbose}{Logical. Indicates whether messages will be printed in the console. Default: \code{TRUE}.}
-
-\item{country}{String. Either "ca" (Canada), or "usa" (USA). Default: \code{"ca"}.}
 }
 \value{
-The function returns a Boolean for the update status. Attributes
-include a status message (msg). The dataset showing all details of all oral
-opioids available for sale as authorized by HealthCanada (HealthCanada_Opioid_Table),
-and its save path (path).
+The function returns the HealthCanada_Opioid_Table as a data.frame. Comments on the data.frame
+include a status message (msg), the HealthCanada_Opioid_Table save path (path),
+a disclaimer, and the source for the retrieved data (source_url_data and source_url_dosing).
 }
 \description{
 \code{load_HealthCanada_Opioid_Table} compares the date of the local HealthCanada_Opioid_Table and compares

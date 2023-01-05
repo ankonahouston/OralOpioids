@@ -1,0 +1,56 @@
+---
+title: "PDF Data Extractor (PDE)"
+author: "Erik Stricker "
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_document:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{PDE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+------------
+
+## Description
+PDE is a R package that easily extracts information and tables from PDF files. The `PDE_analyzer_i()` performs the sentence and table extraction while the included `PDE_reader_i()` allows the user-friendly visualization and quick-processing of the obtained results.
+
+------------
+
+## Execution
+The PDE analyzer can be accessed through different functions which are outlined below.
+```R
+PDE_analyzer()
+PDE_analyzer_i()
+PDE_extr_data_from_pdfs()
+PDE_pdfs2table()
+PDE_pdfs2table_searchandfilter()
+PDE_pdfs2txt_searchandfilter()
+```
+
+The PDE reader is only available as an interactive user interface requiring the R package **tcltk2**.
+```R
+PDE_reader_i()
+```
+**NOTE: For problem solution concerning a potential error when starting `PDE_analyzer_i()` or `PDE_reader_i()` on Mac see [Troubleshoot] - [Error when starting interactive user interface on Mac (failed to allocate tcl font)].**
+
+## Quick guide to get started
+
+### PDE_analyzer_i()
+1. Run
+```R
+library("PDE")
+PDE_analyzer_i()
+```
+```{r, out.width = "50%", fig.align = "center", echo = FALSE}
+knitr::include_graphics("scrnshots/Screenshot_PDE_analyzer_user_interface_empty_mac.png")
+```
+<center>
+`PDE_analyzer_i()` user interface on Mac
+</center></br>
+
+2. This should open a user interface. 
+3. Fill out the form from top to bottom (standard parameters are preselected).    
+4. The filled form can and should be saved as a TSV file at any time. This can be done by clicking the **Save form as tsv** button at the top, center of the form.    
+**NOTE: Choose an empty folder or create a new one as the output directory, since analyses create at least a number of files equal to the number of PDF files analyzed.**
