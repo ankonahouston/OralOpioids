@@ -1,0 +1,26 @@
+---
+title: "Introduction to Canadian Oral Opioids"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Canadian Oral Opioids}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CanadianOralOpioids)
+HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+head(HealthCanada_Opioid_Table)
+MED(108316,HealthCanada_Opioid_Table)
+Brand(108316, HealthCanada_Opioid_Table)
+Opioid(108316, HealthCanada_Opioid_Table)
+MED_50(108316,HealthCanada_Opioid_Table)
+MED_90(108316,HealthCanada_Opioid_Table)
+```

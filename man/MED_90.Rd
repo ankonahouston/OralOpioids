@@ -2,8 +2,7 @@
 % Please edit documentation in R/CanadianOralOpioids.R
 \name{MED_90}
 \alias{MED_90}
-\title{#'Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
-\code{MED_90} gives us the maximum number of units (e.g. tablets or capsules for solid oral opioids and no. of millilitres for liquid oral opioids that are safe assuming a Morphine equivalent Dose of 90.)}
+\title{\code{MED_90} gives us the maximum number of units (e.g. tablets or capsules for solid oral opioids and no. of millilitres for liquid oral opioids that are safe assuming a Morphine equivalent Dose of 90.)}
 \usage{
 MED_90(Drug_ID, HealthCanada_Opioid_Table)
 }
@@ -17,7 +16,6 @@ the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_Heal
 no. of units to reach 90 MED
 }
 \description{
-#'Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 \code{MED_90} gives us the maximum number of units (e.g. tablets or capsules for solid oral opioids and no. of millilitres for liquid oral opioids that are safe assuming a Morphine equivalent Dose of 90.)
 }
 \examples{
