@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Canadian Oral Opioids"
-output: rmarkdown::html_vignette
+output: rmarkdown::md_document
 vignette: >
   %\VignetteIndexEntry{Introduction to Canadian Oral Opioids}
   %\VignetteEngine{knitr::rmarkdown}
