@@ -1,8 +1,8 @@
 ---
-title: "Introduction to Canadian Oral Opioids"
-output: rmarkdown::md_document
+title: "Introduction to Oral Opioids"
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to Canadian Oral Opioids}
+  %\VignetteIndexEntry{Introduction to Oral Opioids}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(CanadianOralOpioids)
+library(OralOpioids)
 HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
 head(HealthCanada_Opioid_Table)
 MED(108316,HealthCanada_Opioid_Table)
