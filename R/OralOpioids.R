@@ -798,9 +798,8 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
 
 #' @export
-##TODO return source with information (website and date)
+
 MED <- function(Drug_ID,HealthCanada_Opioid_Table){
-  ##TODO add source to output
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN){
     a <- subset(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table$DIN == Drug_ID)
 
