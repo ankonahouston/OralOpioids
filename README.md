@@ -119,10 +119,10 @@ on prescription from a licensed healthcare provider.
 
     MED_50(108316,HealthCanada_Opioid_Table)
 
-    ## NULL
+    [1] 22
 
 ### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
     MED_90(108316,HealthCanada_Opioid_Table)
 
-    ## NULL
+    [1] 40
