@@ -3,7 +3,7 @@ title: "Introduction to Oral Opioids"
 author: "Ankona Banerjee & Erik Stricker "
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::md_document:
+  rmarkdown::html_document:
     toc: true
 vignette: >
   %\VignetteIndexEntry{PDE}
@@ -107,7 +107,7 @@ Opioid(108316,HealthCanada_Opioid_Table)
 ```R
 ## [1] "CODEINE 15 MG"
 ```
-### Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
+### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 50 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
 ```R
 MED_50(108316,HealthCanada_Opioid_Table)
@@ -115,7 +115,7 @@ MED_50(108316,HealthCanada_Opioid_Table)
 ```R
 ## NULL
 ```
-### Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
+### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
 ```R
 MED_90(108316,HealthCanada_Opioid_Table)

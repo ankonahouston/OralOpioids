@@ -15,15 +15,17 @@
         id="toc-get-the-opioid-content-from-health-canada-by-using-the-din">Get
         the Opioid content from Health Canada by using the DIN</a>
     -   <a
-        href="#get-the-morphine-equivalent-dose-med-from-health-canada-by-using-the-din-1"
-        id="toc-get-the-morphine-equivalent-dose-med-from-health-canada-by-using-the-din-1">Get
-        the Morphine Equivalent Dose (MED) from Health Canada by using the
-        DIN</a>
+        href="#get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-50-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din"
+        id="toc-get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-50-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din">Get
+        the Maximum number of units/millilitres of oral opioids allowed per day
+        assuming a daily limit of 50 MED/day for a DIN from the HealthCanada
+        Opioid Table by using the DIN</a>
     -   <a
-        href="#get-the-morphine-equivalent-dose-med-from-health-canada-by-using-the-din-2"
-        id="toc-get-the-morphine-equivalent-dose-med-from-health-canada-by-using-the-din-2">Get
-        the Morphine Equivalent Dose (MED) from Health Canada by using the
-        DIN</a>
+        href="#get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-90-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din"
+        id="toc-get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-90-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din">Get
+        the Maximum number of units/millilitres of oral opioids allowed per day
+        assuming a daily limit of 90 MED/day for a DIN from the HealthCanada
+        Opioid Table by using the DIN</a>
 
 ------------------------------------------------------------------------
 
@@ -113,13 +115,13 @@ on prescription from a licensed healthcare provider.
 
     ## [1] "CODEINE 15 MG"
 
-### Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
+### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 50 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
     MED_50(108316,HealthCanada_Opioid_Table)
 
     ## NULL
 
-### Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
+### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
     MED_90(108316,HealthCanada_Opioid_Table)
 
