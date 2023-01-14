@@ -30,11 +30,13 @@
 #'a disclaimer, and the source for the retrieved data (source_url_data and source_url_dosing).
 #'
 
-#' @import ggplot2 tidyr readr purrr forcats readxl reshape2 stringr openxlsx  xml2
+#' @import ggplot2 tidyr readr forcats readxl reshape2 stringr openxlsx utils
 #' @rawNamespace import(dplyr, except = rename)
 #' @importFrom  plyr rename
 #' @importFrom  rvest html_table
-#'
+#' @importFrom rlang .data
+#' @rawNamespace import (xml2, except= as_list)
+#' @rawNamespace import (purrr,except= c(invoke,flatten_raw))
 #' @examples load_HealthCanada_Opioid_Table(no_download = TRUE)
 
 
@@ -307,7 +309,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       Unique_Ingred <- as.data.frame(unique(Opioids_1$Ingred))
 
-      Opioids_1<- subset (Opioids_1,Opioids_1$Opioids_1$Ingred!="CHLORZOXAZONE")
+      Opioids_1<- subset (Opioids_1,Opioids_1$Ingred!="CHLORZOXAZONE")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="PHENOBARBITAL")
       Opioids_1 <- subset (Opioids_1,Opioids_1$Ingred!="METHOCARBAMOL")
       Opioids_1$Caffeine <- ifelse (grepl("CAFFEINE", Opioids_1$Ingred), "1", "0")
@@ -377,16 +379,20 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       status$Date <- as.Date(status$Date,"%d-%b-%Y")
 
 
-
-      status <- status%>%
+       status <- status%>%
         dplyr::arrange(status$ID,desc(status$Date))%>%
         dplyr::group_by(status$ID)%>%
-        dplyr::mutate(ranks=order(status$ID))
+        dplyr::mutate(ranks=order(.data$ID))
 
       #status <- status %>% dplyr::mutate(ranks=row_number())
 
 
       #use_package ("reshape2")
+
+      status <- status[,-1]
+
+      names(status)[3] <- "ID"
+
 
       status <- reshape2::dcast (status,ID~ ranks, value.var= "Status")
 
@@ -425,7 +431,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioids_2$Form_1 <- ifelse (((grepl("TABLET", Opioids_2$Form))|(grepl("CAPSULE", Opioids_2$Form))), "CAPTAB", Opioids_2$Form)
       Opioids_2$Form_1 <- ifelse ((grepl("SYRUP|TINCTURE|ELIXIR|DROPS|SOLUTION|LIQUID|SUSPENSION",Opioids_2$Form)),"LIQUID", Opioids_2$Form_1)
 
-      files <- lapply(list.files(system.file('extdata', package = 'OralOpioidsuseth'), full.names = TRUE), utils::read.csv)
+      files <- lapply(list.files(system.file('extdata', package = 'OralOpioids'), full.names = TRUE), utils::read.csv)
 
       Big_1 <- as.data.frame(files)
 
@@ -438,7 +444,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Big_1 <- Big_1%>%
         dplyr::arrange(Big_1$DIN)%>%
         dplyr::group_by(Big_1$DIN)%>%
-        dplyr::mutate(ranks=order(Big_1$DIN))
+        dplyr::mutate(ranks=order(.data$DIN))
+
+      Big_1 <- Big_1[,-3]
 
 
       Big_2 <- reshape2::dcast (Big_1,DIN~ ranks, value.var= "MED_per_dispensing_unit")
@@ -642,7 +650,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Big_Data <- Big_Data%>%
         dplyr::arrange(Big_Data$DIN)%>%
         dplyr::group_by(Big_Data$DIN)%>%
-        dplyr::mutate(ranks=order(Big_Data$DIN))
+        dplyr::mutate(ranks=order(.data$DIN))
+
+      Big_Data <- Big_Data[,-19]
 
       Previous_DIN <- as.data.frame(Big_1[,2])
       Previous_DIN <- unique(Previous_DIN)
@@ -662,7 +672,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       #Big_Data <- Big_Data[,c(1:11)]
 
       DIN_count <- Big_Data %>%
-        dplyr::group_by(Big_Data$DIN,Big_Data$MED_per_dispensing_unit) %>%
+        dplyr::group_by(.data$DIN,.data$MED_per_dispensing_unit) %>%
         dplyr::tally()
 
 
@@ -678,10 +688,13 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       colnames(Big_Data1) <- c("DIN","Opioid")
 
+      Big_Data1 <- as.data.frame(Big_Data1)
+
       Big_Data1 <- Big_Data1 %>%
-        dplyr::arrange (Big_Data1$DIN,Opioid)%>%
-        dplyr::group_by(Big_Data1$DIN)%>%
-        dplyr::mutate(rank=order(Big_Data1$DIN))
+        dplyr::group_by(.data$DIN)%>%
+        dplyr::mutate(rank=order(.data$DIN))
+
+
 
 
       Big_Data2 <- reshape2::dcast(Big_Data1, DIN ~ rank, value.var="Opioid")
@@ -700,9 +713,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       colnames(Big_Data1) <- c("DIN","Route")
 
       Big_Data1 <- Big_Data1 %>%
-        dplyr::arrange (Big_Data1$DIN,Big_Data1$Route)%>%
-        dplyr::group_by(Big_Data1$DIN)%>%
-        dplyr::mutate(rank=order(Big_Data1$DIN))
+        dplyr::arrange (.data$DIN,Big_Data1$Route)%>%
+        dplyr::group_by(.data$DIN)%>%
+        dplyr::mutate(rank=order(.data$DIN))
 
 
 

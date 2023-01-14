@@ -33,7 +33,9 @@ Imports:
     stringr,
     openxlsx,
     rvest,
-    xml2
+    xml2,
+    utils,
+    rlang
 Suggests: 
     knitr,
     rmarkdown,
