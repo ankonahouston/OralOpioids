@@ -2,9 +2,8 @@
 title: "Introduction to Oral Opioids"
 author: "Ankona Banerjee & Erik Stricker "
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_document:
-    toc: true
+output: rmarkdown::html_document
+
 vignette: >
   %\VignetteIndexEntry{PDE}
   %\VignetteEngine{knitr::rmarkdown}
