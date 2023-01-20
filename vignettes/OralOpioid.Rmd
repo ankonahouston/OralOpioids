@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_document
 
 vignette: >
-  %\VignetteIndexEntry{PDE}
+  %\VignetteIndexEntry{OralOpioids}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
