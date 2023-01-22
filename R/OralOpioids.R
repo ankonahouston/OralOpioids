@@ -176,17 +176,19 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
-      schedule <- utils::read.csv(unz(temp, "schedule.txt"), header= F)
-      drug <- utils::read.csv(unz(temp, "drug.txt"), header= F)
-      ther <- utils::read.csv(unz(temp, "ther.txt"), header= F)
-      status <- utils::read.csv(unz(temp, "status.txt"), header= F)
-      ingred <- utils::read.csv(unz(temp, "ingred.txt"), header= F)
-      route <- utils::read.csv(unz(temp, "route.txt"), header= F)
-      form <- utils::read.csv(unz(temp, "form.txt"), header= F)
+      temp <- unzip(temp)
+      schedule <- utils::read.csv(unzip("allfiles/schedule.zip"), header= F)
+      drug <- utils::read.csv(unzip("allfiles/drug.zip"), header= F)
+      ther <- utils::read.csv(unzip("allfiles/ther.zip"), header= F)
+      status <- utils::read.csv(unzip("allfiles/status.zip"), header= F)
+      ingred <- utils::read.csv(unzip("allfiles/ingred.zip"), header= F)
+      route <- utils::read.csv(unzip("allfiles/route.zip"), header= F)
+      form <- utils::read.csv(unzip("allfiles/form.zip"), header= F)
+
 
       unlink(temp)
 
-
+      temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",temp)
       schedule_ap <- utils::read.csv(unz(temp, "schedule_ap.txt"), header= F)
       drug_ap <- utils::read.csv(unz(temp, "drug_ap.txt"), header= F)
