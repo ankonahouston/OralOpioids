@@ -37,7 +37,7 @@
 #' @importFrom rlang .data
 #' @rawNamespace import (xml2, except= as_list)
 #' @rawNamespace import (purrr,except= c(invoke,flatten_raw))
-#' @examples load_HealthCanada_Opioid_Table(no_download = TRUE)
+#' @examples load_HealthCanada_Opioid_Table(no_download = T)
 
 
 #' @export
@@ -172,57 +172,59 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
                        paste0("Source url of the data: ",source_url_data),
                        paste0("Source url used for dosing: ",source_url_dosing), sep="\n")
 
+
     } else {
 
+      filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
       temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
-      temp <- unzip(temp)
-      schedule <- utils::read.csv(unzip("allfiles/schedule.zip"), header= F)
-      drug <- utils::read.csv(unzip("allfiles/drug.zip"), header= F)
-      ther <- utils::read.csv(unzip("allfiles/ther.zip"), header= F)
-      status <- utils::read.csv(unzip("allfiles/status.zip"), header= F)
-      ingred <- utils::read.csv(unzip("allfiles/ingred.zip"), header= F)
-      route <- utils::read.csv(unzip("allfiles/route.zip"), header= F)
-      form <- utils::read.csv(unzip("allfiles/form.zip"), header= F)
+      unzip(temp,exdir= filelocation)
+      schedule <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/schedule.zip"),exdir= filelocation),header=F)
+      drug <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/drug.zip"),exdir= filelocation),header=F)
+      ther <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/ther.zip"),exdir= filelocation),header=F)
+      status <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/status.zip"),exdir= filelocation),header=F)
+      ingred <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/ingred.zip"),exdir= filelocation),header=F)
+      route <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/route.zip"),exdir= filelocation),header=F)
+      form <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/form.zip"), exdir= filelocation),header=F)
 
+      unlink(temp)
+
+      temp1 <- tempfile()
+      utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",temp1)
+      unzip(temp1,exdir= filelocation)
+      schedule_ap <- utils::read.csv(paste0(filelocation,"/schedule_ap.txt"),header=F)
+      drug_ap <- utils::read.csv(paste0(filelocation,"/drug_ap.txt"),header=F)
+      ther_ap <- utils::read.csv(paste0(filelocation,"/ther_ap.txt"),header=F)
+      status_ap <- utils::read.csv(paste0(filelocation,"/status_ap.txt"),header=F)
+      ingred_ap <- utils::read.csv(paste0(filelocation,"/ingred_ap.txt"),header=F)
+      route_ap <- utils::read.csv(paste0(filelocation,"/route_ap.txt"),header=F)
+      form_ap <- utils::read.csv(paste0(filelocation,"/form_ap.txt"),header=F)
+
+      unlink(temp1)
+
+      temp <- tempfile()
+      utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_dr.zip",temp)
+      unzip(temp,exdir= filelocation)
+      schedule_dr <- utils::read.csv(paste0(filelocation,"/schedule_dr.txt"),header=F)
+      drug_dr <- utils::read.csv(paste0(filelocation,"/drug_dr.txt"),header=F)
+      ther_dr <- utils::read.csv(paste0(filelocation,"/ther_dr.txt"),header=F)
+      status_dr <- utils::read.csv(paste0(filelocation,"/status_dr.txt"),header=F)
+      ingred_dr <- utils::read.csv(paste0(filelocation,"/ingred_dr.txt"),header=F)
+      route_dr <- utils::read.csv(paste0(filelocation,"/route_dr.txt"),header=F)
+      form_dr <- utils::read.csv(paste0(filelocation,"/form_dr.txt"),header=F)
 
       unlink(temp)
 
       temp <- tempfile()
-      utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",temp)
-      schedule_ap <- utils::read.csv(unz(temp, "schedule_ap.txt"), header= F)
-      drug_ap <- utils::read.csv(unz(temp, "drug_ap.txt"), header= F)
-      ther_ap <- utils::read.csv(unz(temp, "ther_ap.txt"), header= F)
-      status_ap <- utils::read.csv(unz(temp, "status_ap.txt"), header= F)
-      ingred_ap <- utils::read.csv(unz(temp, "ingred_ap.txt"), header= F)
-      route_ap <- utils::read.csv(unz(temp, "route_ap.txt"), header= F)
-      form_ap <- utils::read.csv(unz(temp, "form_ap.txt"), header= F)
-
-
-      unlink(temp)
-
-
-      utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_dr.zip",temp)
-      schedule_dr <- utils::read.csv(unz(temp, "schedule_dr.txt"), header= F)
-      drug_dr <- utils::read.csv(unz(temp, "drug_dr.txt"), header= F)
-      ther_dr <- utils::read.csv(unz(temp, "ther_dr.txt"), header= F)
-      status_dr <- utils::read.csv(unz(temp, "status_dr.txt"), header= F)
-      ingred_dr <- utils::read.csv(unz(temp, "ingred_dr.txt"), header= F)
-      route_dr <- utils::read.csv(unz(temp, "route_dr.txt"), header= F)
-      form_dr <- utils::read.csv(unz(temp, "form_dr.txt"), header= F)
-
-
-      unlink(temp)
-
-
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ia.zip",temp)
-      schedule_ia <- utils::read.csv(unz(temp, "schedule_ia.txt"), header= F)
-      drug_ia <- utils::read.csv(unz(temp, "drug_ia.txt"), header= F)
-      ther_ia <- utils::read.csv(unz(temp, "ther_ia.txt"), header= F)
-      status_ia <- utils::read.csv(unz(temp, "status_ia.txt"), header= F)
-      ingred_ia <- utils::read.csv(unz(temp, "ingred_ia.txt"), header= F)
-      route_ia <- utils::read.csv(unz(temp, "route_ia.txt"), header= F)
-      form_ia <- utils::read.csv(unz(temp, "form_ia.txt"), header= F)
+      unzip(temp,exdir= filelocation)
+      schedule_ia <- utils::read.csv(paste0(filelocation,"/schedule_ia.txt"),header=F)
+      drug_ia <- utils::read.csv(paste0(filelocation,"/drug_ia.txt"),header=F)
+      ther_ia <- utils::read.csv(paste0(filelocation,"/ther_ia.txt"),header=F)
+      status_ia <- utils::read.csv(paste0(filelocation,"/status_ia.txt"),header=F)
+      ingred_ia <- utils::read.csv(paste0(filelocation,"/ingred_ia.txt"),header=F)
+      route_ia <- utils::read.csv(paste0(filelocation,"/route_ia.txt"),header=F)
+      form_ia <- utils::read.csv(paste0(filelocation,"/form_ia.txt"),header=F)
 
       unlink(temp)
 

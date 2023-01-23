@@ -30,5 +30,5 @@ it with the latest date of data provided Health Canada. In case the local file i
 an updated file will be generated.
 }
 \examples{
-load_HealthCanada_Opioid_Table(no_download = TRUE)
+load_HealthCanada_Opioid_Table(no_download = T)
 }
