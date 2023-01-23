@@ -54,7 +54,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
   ## 1) Get HealthCanada data date and compare with HealthCanada_Opioid_Table date
   ## Get HealthCanada data date ------------------------
+
   content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
+  library (dplyr)
   tables <- content %>%
         rvest::html_table(fill = TRUE)
   second_table <- tables[[2]]
