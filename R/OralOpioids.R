@@ -181,54 +181,54 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
       unzip(temp,exdir= filelocation)
-      schedule <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/schedule.zip"),exdir= filelocation),header=F)
-      drug <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/drug.zip"),exdir= filelocation),header=F)
-      ther <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/ther.zip"),exdir= filelocation),header=F)
-      status <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/status.zip"),exdir= filelocation),header=F)
-      ingred <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/ingred.zip"),exdir= filelocation),header=F)
-      route <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/route.zip"),exdir= filelocation),header=F)
-      form <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/form.zip"), exdir= filelocation),header=F)
+      schedule <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/schedule.zip"),exdir= paste0(filelocation,"/txtfiles")),header=F)
+      drug <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/drug.zip"),exdir= paste0(filelocation,"/txtfiles")),header=F)
+      ther <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/ther.zip"),exdir= paste0(filelocation,"/txtfiles")),header=F)
+      status <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/status.zip"),exdir= paste0(filelocation,"/txtfiles")),header=F)
+      ingred <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/ingred.zip"),exdir= paste0(filelocation,"/txtfiles")),header=F)
+      route <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/route.zip"),exdir= paste0(filelocation,"/txtfiles")),header=F)
+      form <- utils::read.csv(unzip(paste0(filelocation,"/allfiles/form.zip"), exdir= paste0(filelocation,"/txtfiles")),header=F)
 
-      unlink(temp)
+      unlink(temp,recursive = TRUE)
 
       temp1 <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",temp1)
-      unzip(temp1,exdir= filelocation)
-      schedule_ap <- utils::read.csv(paste0(filelocation,"/schedule_ap.txt"),header=F)
-      drug_ap <- utils::read.csv(paste0(filelocation,"/drug_ap.txt"),header=F)
-      ther_ap <- utils::read.csv(paste0(filelocation,"/ther_ap.txt"),header=F)
-      status_ap <- utils::read.csv(paste0(filelocation,"/status_ap.txt"),header=F)
-      ingred_ap <- utils::read.csv(paste0(filelocation,"/ingred_ap.txt"),header=F)
-      route_ap <- utils::read.csv(paste0(filelocation,"/route_ap.txt"),header=F)
-      form_ap <- utils::read.csv(paste0(filelocation,"/form_ap.txt"),header=F)
+      unzip(temp1,exdir= paste0(filelocation,"/txtfiles"))
+      schedule_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/schedule_ap.txt"),header=F)
+      drug_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/drug_ap.txt"),header=F)
+      ther_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/ther_ap.txt"),header=F)
+      status_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/status_ap.txt"),header=F)
+      ingred_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/ingred_ap.txt"),header=F)
+      route_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/route_ap.txt"),header=F)
+      form_ap <- utils::read.csv(paste0(filelocation,"/txtfiles/form_ap.txt"),header=F)
 
-      unlink(temp1)
+      unlink(temp1,recursive = TRUE)
 
       temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_dr.zip",temp)
-      unzip(temp,exdir= filelocation)
-      schedule_dr <- utils::read.csv(paste0(filelocation,"/schedule_dr.txt"),header=F)
-      drug_dr <- utils::read.csv(paste0(filelocation,"/drug_dr.txt"),header=F)
-      ther_dr <- utils::read.csv(paste0(filelocation,"/ther_dr.txt"),header=F)
-      status_dr <- utils::read.csv(paste0(filelocation,"/status_dr.txt"),header=F)
-      ingred_dr <- utils::read.csv(paste0(filelocation,"/ingred_dr.txt"),header=F)
-      route_dr <- utils::read.csv(paste0(filelocation,"/route_dr.txt"),header=F)
-      form_dr <- utils::read.csv(paste0(filelocation,"/form_dr.txt"),header=F)
+      unzip(temp,exdir= paste0(filelocation,"/txtfiles"))
+      schedule_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/schedule_dr.txt"),header=F)
+      drug_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/drug_dr.txt"),header=F)
+      ther_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/ther_dr.txt"),header=F)
+      status_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/status_dr.txt"),header=F)
+      ingred_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/ingred_dr.txt"),header=F)
+      route_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/route_dr.txt"),header=F)
+      form_dr <- utils::read.csv(paste0(filelocation,"/txtfiles/form_dr.txt"),header=F)
 
-      unlink(temp)
+      unlink(temp,recursive = TRUE)
 
       temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ia.zip",temp)
-      unzip(temp,exdir= filelocation)
-      schedule_ia <- utils::read.csv(paste0(filelocation,"/schedule_ia.txt"),header=F)
-      drug_ia <- utils::read.csv(paste0(filelocation,"/drug_ia.txt"),header=F)
-      ther_ia <- utils::read.csv(paste0(filelocation,"/ther_ia.txt"),header=F)
-      status_ia <- utils::read.csv(paste0(filelocation,"/status_ia.txt"),header=F)
-      ingred_ia <- utils::read.csv(paste0(filelocation,"/ingred_ia.txt"),header=F)
-      route_ia <- utils::read.csv(paste0(filelocation,"/route_ia.txt"),header=F)
-      form_ia <- utils::read.csv(paste0(filelocation,"/form_ia.txt"),header=F)
+      unzip(temp,exdir= paste0(filelocation,"/txtfiles"))
+      schedule_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/schedule_ia.txt"),header=F)
+      drug_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/drug_ia.txt"),header=F)
+      ther_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/ther_ia.txt"),header=F)
+      status_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/status_ia.txt"),header=F)
+      ingred_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/ingred_ia.txt"),header=F)
+      route_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/route_ia.txt"),header=F)
+      form_ia <- utils::read.csv(paste0(filelocation,"/txtfiles/form_ia.txt"),header=F)
 
-      unlink(temp)
+      unlink(temp,recursive = TRUE)
 
       schedule <- rbind (schedule, schedule_ap, schedule_dr, schedule_ia)
       rm (schedule_ap, schedule_dr, schedule_ia)
@@ -755,8 +755,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Big_Data <- Big_Data[,c(1:18)]
 
 
-      #suppressWarnings(use_package ("plyr"))
-
       Big_Data <- plyr::rename(Big_Data, c("Opioid.x" = "Opioid"))
       Big_Data <- plyr::rename(Big_Data, c("Route.x" = "Route"))
 
@@ -764,9 +762,12 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Big_Data <- unique(Big_Data)
       HealthCanada_Opioid_Table <- merge(Big_Data,form,by= "ID")
 
-      FILES <- list.files(filelocation)
-      files_to_be_deleted <- FILES[grepl("txt$",unlist(FILES))]
-      suppressWarnings(file.remove(paste0(filelocation,"/",files_to_be_deleted)))
+      unlink(paste0(filelocation,"/txtfiles"),recursive = TRUE)
+      unlink(paste0(filelocation,"/allfiles"),recursive = TRUE)
+
+      # FILES <- list.files(filelocation)
+      # files_to_be_deleted <- FILES[grepl("txt$",unlist(FILES))]
+      # suppressWarnings(file.remove(paste0(filelocation,"/",files_to_be_deleted)))
 
 
       out_msg <- paste0("The HealthCanada_Opioid_Table was successfully updated to ",
