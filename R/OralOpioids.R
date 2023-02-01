@@ -296,7 +296,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioid_Query <- Opioid_Query[,c(2,3,4)]
       Opioid_Query <- unique (Opioid_Query)
 
-      Opioid_Query$DIN <- as.numeric(Opioid_Query$DIN)
+      Opioid_Query$DIN <- suppressWarnings(as.numeric(Opioid_Query$DIN))
 
       drug$keep <- ifelse (((grepl("Narcotic", drug$Schedule))), "1", "0")
 
@@ -413,7 +413,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioids_1 <- merge (Opioids_1, form, by= "ID")
       Opioids_1 <- merge (Opioids_1,route, by= "ID")
 
-      Opioids_1$DIN <- as.numeric(Opioids_1$DIN)
+      Opioids_1$DIN <- suppressWarnings(as.numeric(Opioids_1$DIN))
 
       #usethis::use_package ("stringr")
 
@@ -507,14 +507,14 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       #str(Incomplete3)
 
-      Incomplete3$Opioid_2 <- as.numeric(Incomplete3$Opioid_2)
+      Incomplete3$Opioid_2 <- suppressWarnings(as.numeric(Incomplete3$Opioid_2))
 
       Incomplete3$MED_per_dispensing_unit<- ifelse (Incomplete3$Opioid_1 %in% c("BUPRENORPHINE","NALOXONE"),
                                                     "Couldn't be calculated",Incomplete3$MED_per_dispensing_unit)
 
       #str(Incomplete3)
 
-      Incomplete3$Base1 <- as.numeric(Incomplete3$Base1)
+      Incomplete3$Base1 <- suppressWarnings(as.numeric(Incomplete3$Base1))
 
       Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route %in% c("BUCCAL","SUBLINGUAL") & Incomplete3$Opioid_1=="FENTANYL"),
                                                      ((Incomplete3$Opioid_2*0.13)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
@@ -543,7 +543,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
                                                      ((Incomplete3$Opioid_2*3)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
       #str(Incomplete3)
 
-      Incomplete3$MED_per_dispensing_unit <- as.numeric(Incomplete3$MED_per_dispensing_unit)
+      Incomplete3$MED_per_dispensing_unit <- suppressWarnings(as.numeric(Incomplete3$MED_per_dispensing_unit))
 
       Incomplete3$MED_per_dispensing_unit <- round (Incomplete3$MED_per_dispensing_unit,1)
 
@@ -583,7 +583,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Total_Incomplete$MED_per_dispensing_unit <- ifelse (Total_Incomplete$Opioid=="OXYCODONE 40 MG" & Total_Incomplete$Form_1=="CAPTAB" ,60,Total_Incomplete$MED_per_dispensing_unit )
 
 
-      Total_Incomplete$MED_per_dispensing_unit <- as.numeric (Total_Incomplete$MED_per_dispensing_unit)
+      Total_Incomplete$MED_per_dispensing_unit <- suppressWarnings(as.numeric (Total_Incomplete$MED_per_dispensing_unit))
 
       Total_Incomplete$MED_50_day <- 50/(Total_Incomplete$MED_per_dispensing_unit)
       Total_Incomplete$MED_50_day <- round(Total_Incomplete$MED_50_day, digits=0)
@@ -602,7 +602,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       names (Total_Incomplete) [13] <- "Maximum No_tabs/ml assuming 50 MED limit for 14 days"
       names (Total_Incomplete) [14] <- "Maximum No_tabs/ml assuming 50 MED limit for 30 days"
 
-      drug$DIN <- as.numeric(drug$DIN)
+      drug$DIN <- suppressWarnings(as.numeric(drug$DIN))
       status <- merge (status, drug, by= "ID")
 
 
@@ -625,7 +625,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       #colnames (Complete_a)
       #colnames (Total_Incomplete)
 
-      Complete_a$MED_per_dispensing_unit <- as.numeric(Complete_a$MED_per_dispensing_unit)
+      Complete_a$MED_per_dispensing_unit <- suppressWarnings(as.numeric(Complete_a$MED_per_dispensing_unit))
 
       Complete_a$MED_50_day <- 50/(Complete_a$MED_per_dispensing_unit)
       Complete_a$MED_50_day <- round(Complete_a$MED_50_day, digits=0)
