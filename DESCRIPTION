@@ -14,8 +14,10 @@ Authors@R:
 		   email = "erik.stricker@gmx.com",
            comment = c(ORCID = "0000-0003-2112-2202")))
 Maintainer: Ankona Banerjee <asb426@mail.usask.ca>
-Description: Details of All Oral Opioid Medications Authorized for Sale by Health Canada. Please Note No Way Should Output from this Package be a Substitute for Medical Advise. All Medications Should Only Be Consumed on Prescription from a Licensed Healthcare Provider.
-License: GPL-3 | file LICENSE
+Description: The package downloads the monthly data dump provided by Health Canada and calculates details like Morphine Equivalent Dose and provides details like Brand Name and Opioid content. Please note in no way should output from this package be a substitute for medical advise. All medications should only be consumed on prescription from a licensed healthcare provider.
+           <https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html>
+           <https://www.cihi.ca/sites/default/files/document/opioid-prescribing-canada-trends-en-web.pdf>
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
