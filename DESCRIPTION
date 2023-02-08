@@ -1,6 +1,6 @@
 Package: OralOpioids
 Type: Package
-Title: It Provides Details of All Oral Opioid Medications Authorized for Sale by Health Canada
+Title: A General Package to Retrieve Oral Opioid Information
 Version: 1.0.0
 Authors@R: 
   c(person(family = "Banerjee",
@@ -14,7 +14,13 @@ Authors@R:
 		   email = "erik.stricker@gmx.com",
            comment = c(ORCID = "0000-0003-2112-2202")))
 Maintainer: Ankona Banerjee <asb426@mail.usask.ca>
-Description: Health Canada's Drug Product Database's monthly data dump is downloaded with permission and details like Morphine Equivalent Dose, Brand Name and Opioid content are calculated. Please note in no way should output from this package be a substitute for medical advise. All medications should only be consumed on prescription from a licensed healthcare provider.
+Description: Provides details such as Morphine Equivalent Dose (MED), 
+	brand name and opioid content are calculated of all oral opioids 
+	authorized for sale by Health Canada based on their Drug Identification Number (DIN). 
+	MEDs are calculated based on recommendations by Canadian Institute for Health Information (CIHI) 
+	and information obtained from Health Canada's Drug Product Database's monthly data dump. 
+	Please note in no way should output from this package be a substitute for medical advise.  
+	All medications should only be consumed on prescription from a licensed healthcare provider.
 URL: "https://github.com/ankonahouston/OralOpioids"
 License: GPL-3|file LICENSE
 Encoding: UTF-8
