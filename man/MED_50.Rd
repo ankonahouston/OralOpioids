@@ -21,6 +21,6 @@ no. of units to reach 50 MED
 \examples{
 
 HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-MED_50(108316, HealthCanada_Opioid_Table)
+MED_50(786535, HealthCanada_Opioid_Table)
 
 }

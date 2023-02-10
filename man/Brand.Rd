@@ -21,5 +21,6 @@ Brand name
 \examples{
 
 HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-Brand(108316, HealthCanada_Opioid_Table)
+Brand(786535, HealthCanada_Opioid_Table)
+
 }

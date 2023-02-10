@@ -21,6 +21,6 @@ Opioid content
 \examples{
 
 HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-Opioid(108316, HealthCanada_Opioid_Table)
+Opioid(786535, HealthCanada_Opioid_Table)
 
 }

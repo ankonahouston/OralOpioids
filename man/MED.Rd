@@ -21,5 +21,5 @@ MED: Morphine Equivalent Dose
 \examples{
 
 HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-MED(108316, HealthCanada_Opioid_Table)
+MED(786535, HealthCanada_Opioid_Table)
 }
