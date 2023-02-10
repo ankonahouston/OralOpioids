@@ -1,40 +1,16 @@
--   <a href="#description" id="toc-description">Description</a>
--   <a href="#functions" id="toc-functions">Functions</a>
-    -   <a href="#loadingupdating-the-health-canada-dataset"
-        id="toc-loadingupdating-the-health-canada-dataset">Loading/updating the
-        Health Canada dataset</a>
-    -   <a
-        href="#get-the-morphine-equivalent-dose-med-from-health-canada-by-using-the-din"
-        id="toc-get-the-morphine-equivalent-dose-med-from-health-canada-by-using-the-din">Get
-        the Morphine Equivalent Dose (MED) from Health Canada by using the
-        DIN</a>
-    -   <a href="#get-the-brand-name-from-health-canada-by-using-the-din"
-        id="toc-get-the-brand-name-from-health-canada-by-using-the-din">Get the
-        Brand name from Health Canada by using the DIN</a>
-    -   <a href="#get-the-opioid-content-from-health-canada-by-using-the-din"
-        id="toc-get-the-opioid-content-from-health-canada-by-using-the-din">Get
-        the Opioid content from Health Canada by using the DIN</a>
-    -   <a
-        href="#get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-50-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din"
-        id="toc-get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-50-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din">Get
-        the Maximum number of units/millilitres of oral opioids allowed per day
-        assuming a daily limit of 50 MED/day for a DIN from the HealthCanada
-        Opioid Table by using the DIN</a>
-    -   <a
-        href="#get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-90-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din"
-        id="toc-get-the-maximum-number-of-unitsmillilitres-of-oral-opioids-allowed-per-day-assuming-a-daily-limit-of-90-medday-for-a-din-from-the-healthcanada-opioid-table-by-using-the-din">Get
-        the Maximum number of units/millilitres of oral opioids allowed per day
-        assuming a daily limit of 90 MED/day for a DIN from the HealthCanada
-        Opioid Table by using the DIN</a>
-
 ------------------------------------------------------------------------
 
 ## Description
 
-This package provides details of all oral opioids authorized for sale by
-Health Canada. Please note no way should output from this package be a
-substitute for medical advise. All medications should only be consumed
-on prescription from a licensed healthcare provider.
+Provides details such as Morphine Equivalent Dose (MED), brand name and
+opioid content which are calculated of all oral opioids authorized for
+sale by Health Canada based on their Drug Identification Number (DIN).
+MEDs are calculated based on recommendations by Canadian Institute for
+Health Information (CIHI) and information obtained from Health Canada’s
+Drug Product Database’s monthly data dump. Please note in no way should
+output from this package be a substitute for medical advise.  
+All medications should only be consumed on prescription from a licensed
+healthcare provider
 
 ------------------------------------------------------------------------
 
@@ -99,30 +75,30 @@ on prescription from a licensed healthcare provider.
 
 ### Get the Morphine Equivalent Dose (MED) from Health Canada by using the DIN
 
-    MED(108316,HealthCanada_Opioid_Table)
+    MED(786535,HealthCanada_Opioid_Table)
 
-    ## [1] 2.25
+    ## [1] 5
 
 ### Get the Brand name from Health Canada by using the DIN
 
-    Brand(108316, HealthCanada_Opioid_Table)
+    Brand(786535, HealthCanada_Opioid_Table)
 
-    ## [1] "282 MEP TAB"
+    ## [1] "DILAUDID"
 
 ### Get the Opioid content from Health Canada by using the DIN
 
-    Opioid(108316,HealthCanada_Opioid_Table)
+    Opioid(786535,HealthCanada_Opioid_Table)
 
-    ## [1] "CODEINE 15 MG"
+    ## [1] "HYDROMORPHONE 1 MG"
 
 ### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 50 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
-    MED_50(108316,HealthCanada_Opioid_Table)
+    MED_50(786535,HealthCanada_Opioid_Table)
 
-    [1] 22
+    [1] 10
 
 ### Get the Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN
 
-    MED_90(108316,HealthCanada_Opioid_Table)
+    MED_90(786535,HealthCanada_Opioid_Table)
 
-    [1] 40
+    [1] 18

@@ -37,7 +37,9 @@
 #' @importFrom rlang .data
 #' @rawNamespace import (xml2, except= as_list)
 #' @rawNamespace import (purrr,except= c(invoke,flatten_raw))
-#' @examples load_HealthCanada_Opioid_Table(no_download = T)
+#' @examples
+#'   HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#'   head(HealthCanada_Opioid_Table)
 
 
 #' @export
@@ -868,10 +870,10 @@ Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
 #' @return Brand name
 #' @rawNamespace import(dplyr, except = rename)
 #' @examples
-#' \donttest{
+#'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
 #' Brand(786535, HealthCanada_Opioid_Table)
-#' }
+#'
 #' @export
 Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
