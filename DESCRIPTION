@@ -15,7 +15,7 @@ Authors@R:
            comment = c(ORCID = "0000-0003-2112-2202")))
 Maintainer: Ankona Banerjee <asb426@mail.usask.ca>
 Description: Provides details such as Morphine Equivalent Dose (MED), 
-	brand name and opioid content are calculated of all oral opioids 
+	brand name and opioid content which are calculated of all oral opioids 
 	authorized for sale by Health Canada based on their Drug Identification Number (DIN). 
 	MEDs are calculated based on recommendations by Canadian Institute for Health Information (CIHI) 
 	and information obtained from Health Canada's Drug Product Database's monthly data dump. 

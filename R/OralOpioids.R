@@ -816,7 +816,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-#' MED(108316, HealthCanada_Opioid_Table)
+#' MED(786535, HealthCanada_Opioid_Table)
 
 
 #' @export
@@ -847,7 +847,7 @@ MED <- function(Drug_ID,HealthCanada_Opioid_Table){
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-#' Opioid(108316, HealthCanada_Opioid_Table)
+#' Opioid(786535, HealthCanada_Opioid_Table)
 #'
 #' @export
 Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
@@ -868,9 +868,10 @@ Opioid <- function(Drug_ID,HealthCanada_Opioid_Table){
 #' @return Brand name
 #' @rawNamespace import(dplyr, except = rename)
 #' @examples
-#'
+#' \donttest{
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-#' Brand(108316, HealthCanada_Opioid_Table)
+#' Brand(786535, HealthCanada_Opioid_Table)
+#' }
 #' @export
 Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN)
@@ -894,7 +895,7 @@ Brand <- function(Drug_ID,HealthCanada_Opioid_Table){
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-#' MED_50(108316, HealthCanada_Opioid_Table)
+#' MED_50(786535, HealthCanada_Opioid_Table)
 #'
 #' @export
 MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
@@ -922,7 +923,7 @@ MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
 #' @examples
 #'
 #' HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
-#' MED_90(108316, HealthCanada_Opioid_Table)
+#' MED_90(786535, HealthCanada_Opioid_Table)
 #' @export
 MED_90 <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN){
