@@ -1,6 +1,6 @@
 Package: OralOpioids
 Type: Package
-Title: A General Package to Retrieve Oral Opioid Information
+Title:Retrieving Oral Opioid Information
 Version: 1.0.0
 Authors@R: 
   c(person(family = "Banerjee",
@@ -22,7 +22,7 @@ Description: Provides details such as Morphine Equivalent Dose (MED),
     Please note in no way should output from this package be a substitute for medical advise.  
     All medications should only be consumed on prescription from a licensed healthcare provider.
 URL: "https://github.com/ankonahouston/OralOpioids"
-License: GPL-3|file LICENSE
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
