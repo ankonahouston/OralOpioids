@@ -19,9 +19,9 @@ healthcare provider
 ### Loading/updating the Health Canada dataset
 
     library(OralOpioids)
-    HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table()
+    HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(filelocation = tempdir())
 
-    ## Your HealthCanada_Opioid_Table is outdated. Do you want to download  the latest data from Health Canada? (y/n) 
+    ## No HealthCanada_Opioid_Tables are currently in the filelocation. Do you want to download  the latest data from Health Canada? (y/n)  
     ## 
     ## 1: Y
     ## 2: N
