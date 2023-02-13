@@ -38,7 +38,7 @@
 #' @rawNamespace import (xml2, except= as_list)
 #' @rawNamespace import (purrr,except= c(invoke,flatten_raw))
 #' @examples
-#'   HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+#'   HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = T)
 #'   head(HealthCanada_Opioid_Table)
 
 
@@ -47,6 +47,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
   if (filelocation == ""){
     filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
+    #filelocation <- tempdir()
   }
 
   ## if the filelocation directory does not exist, create it
@@ -179,7 +180,8 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
     } else {
 
-      filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
+      #filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
+      filelocation <- tempdir()
       temp <- tempfile()
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
       unzip(temp,exdir= paste0(filelocation,"/txtfiles"))
@@ -776,7 +778,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
                                   second_table_date,".")
 
       HealthCanada_Opioid_Table <- cbind(HealthCanada_Opioid_Table[,c(2:8,19,10:16)],last_updated = second_table_date)
-
+      filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
       ## Write the new table
       HealthCanada_Opioid_Table_path <- paste0(filelocation,"/",second_table_date,"_HealthCanada_Opioid_Table.xlsx")
       openxlsx::write.xlsx(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table_path)

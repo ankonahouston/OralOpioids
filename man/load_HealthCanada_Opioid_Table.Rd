@@ -30,6 +30,6 @@ it with the latest date of data provided Health Canada. In case the local file i
 an updated file will be generated.
 }
 \examples{
-  HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+  HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = T)
   head(HealthCanada_Opioid_Table)
 }
