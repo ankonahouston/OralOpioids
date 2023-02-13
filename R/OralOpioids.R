@@ -906,9 +906,9 @@ MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN){
 
     a <- subset(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table$DIN== Drug_ID)
-    out_MED50_per_dispensing_unit <- suppressWarnings(as.numeric(a$`No_tabs/ml.assuming.50.MED.limit.per.day`))
+    out_MED50_per_dispensing_unit <- suppressWarnings(as.numeric(a$`No_tabs/ml assuming 50 MED limit per day`))
     if (is.na(out_MED50_per_dispensing_unit[1])){
-      out_MED50_per_dispensing_unit <- a$`No_tabs/ml.assuming.50.MED.limit.per.day`
+      out_MED50_per_dispensing_unit <- a$`No_tabs/ml assuming 50 MED limit per day`
     }
     return(out_MED50_per_dispensing_unit)
   } else return("The DIN could not be found in the HealthCanada_Opioid_Table.")
@@ -932,9 +932,9 @@ MED_50 <- function(Drug_ID,HealthCanada_Opioid_Table){
 MED_90 <- function(Drug_ID,HealthCanada_Opioid_Table){
   if (Drug_ID %in% HealthCanada_Opioid_Table$DIN){
     a <- subset(HealthCanada_Opioid_Table,HealthCanada_Opioid_Table$DIN== Drug_ID)
-    out_MED90_per_dispensing_unit <- suppressWarnings(as.numeric(a$`No_tabs/ml.assuming.90.MED.limit.per.day`))
+    out_MED90_per_dispensing_unit <- suppressWarnings(as.numeric(a$`No_tabs/ml assuming 90 MED limit per day`))
     if (is.na(out_MED90_per_dispensing_unit[1])){
-      out_MED90_per_dispensing_unit <- a$`No_tabs/ml.assuming.90.MED.limit.per.day`
+      out_MED90_per_dispensing_unit <- a$`No_tabs/ml assuming 90 MED limit per day`
     }
     return(out_MED90_per_dispensing_unit)
   } else return("The DIN could not be found in the HealthCanada_Opioid_Table.")
