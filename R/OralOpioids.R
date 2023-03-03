@@ -9,7 +9,7 @@
 #' @name OralOpioids
   NULL
 
-## Version 1.0.0
+## Version 1.0.1
 
 #'Obtain the latest Opioid data from Health Canada
 #'
@@ -38,7 +38,7 @@
 #' @rawNamespace import (xml2, except= as_list)
 #' @rawNamespace import (purrr,except= c(invoke,flatten_raw))
 #' @examples
-#'   HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = T)
+#'   HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
 #'   head(HealthCanada_Opioid_Table)
 
 
@@ -471,7 +471,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
 
       #colnames (Opioids_2)
-      Complete <- merge (Big_1,Opioids_2,by= c("DIN"), all.y= T)
+      Complete <- merge (Big_1,Opioids_2,by= c("DIN"), all.y= TRUE)
 
 
       Complete_a <- subset (Complete, !is.na(Complete$MED_per_dispensing_unit))
@@ -489,7 +489,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       #colnames (Incomplete)
       Incomplete1 <- Incomplete[,c(1,3,4:7,9,10,11)]
 
-      Incomplete1 <- merge (Incomplete1, Complete2, by= c("Base1","Base2","Base3","Opioid","Route","Form_1"), all.x= T)
+      Incomplete1 <- merge (Incomplete1, Complete2, by= c("Base1","Base2","Base3","Opioid","Route","Form_1"), all.x= TRUE)
 
       Incomplete_Done <- subset (Incomplete1,!is.na(Incomplete1$MED_per_dispensing_unit))
       Incomplete2 <- subset (Incomplete1,is.na(Incomplete1$MED_per_dispensing_unit))
@@ -561,7 +561,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       Incomplete_Done <- Incomplete_Done[ ,c(1:8,10)]
 
-      Incomplete4 <- merge (Incomplete2, Incomplete3,by= c("Base1","Base2","Base3","Opioid","Route","Form_1","DIN"), all.x= T)
+      Incomplete4 <- merge (Incomplete2, Incomplete3,by= c("Base1","Base2","Base3","Opioid","Route","Form_1","DIN"), all.x= TRUE)
 
       Incomplete4 <- unique (Incomplete4)
 
@@ -672,7 +672,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       Big_Data_DIN$Month <- "Recent"
 
-      a <- merge (Big_Data_DIN, Previous_DIN,by= "DIN", all.x= T, all.y= T)
+      a <- merge (Big_Data_DIN, Previous_DIN,by= "DIN", all.x= TRUE, all.y= TRUE)
 
 
 
