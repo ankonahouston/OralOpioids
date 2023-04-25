@@ -516,8 +516,11 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       for (o in 1:length(Incomplete3$Opioid_1)){
         ##TODEL
+        print("Incomplete3$Opioid_1[o]")
         print(Incomplete3$Opioid_1[o])
+        print("Incomplete3$Opioid_2[o]")
         print(Incomplete3$Opioid_2[o])
+        print("Incomplete3$Base1[o]")
         print(Incomplete3$Base1[o])
 
         opiod_rows <- MED_conversion_table[grep(Incomplete3$Opioid_1[o], MED_conversion_table$Opiod),]
@@ -565,6 +568,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         #                                                ((Incomplete3$Opioid_2*3)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
         #str(Incomplete3)
         ##TODEL
+        print("Incomplete3$MED_per_dispensing_unit[o]")
         print(Incomplete3$MED_per_dispensing_unit[o])
         if (Incomplete3$MED_per_dispensing_unit[o] != "Couldn't be calculated"){
           Incomplete3$MED_per_dispensing_unit[o] <- suppressWarnings(as.numeric(Incomplete3$MED_per_dispensing_unit[o]))
