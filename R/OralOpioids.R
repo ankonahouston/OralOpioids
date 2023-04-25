@@ -9,7 +9,7 @@
 #' @name OralOpioids
   NULL
 
-## Version 1.0.1
+## Version 1.1.0
 
 #'Obtain the latest Opioid data from Health Canada
 #'
@@ -438,9 +438,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioids_2$Form_1 <- ifelse (((grepl("TABLET", Opioids_2$Form))|(grepl("CAPSULE", Opioids_2$Form))), "CAPTAB", Opioids_2$Form)
       Opioids_2$Form_1 <- ifelse ((grepl("SYRUP|TINCTURE|ELIXIR|DROPS|SOLUTION|LIQUID|SUSPENSION",Opioids_2$Form)),"LIQUID", Opioids_2$Form_1)
 
-      files <- lapply(list.files(system.file('extdata', package = 'OralOpioids'), full.names = TRUE), utils::read.csv)
+      # files <- lapply(list.files(system.file('extdata', package = 'OralOpioids'), full.names = TRUE), utils::read.csv)
 
-      Big_1 <- as.data.frame(files)
+      Big_1 <- as.data.frame(utils::read.csv(paste0(system.file('extdata', package = 'OralOpioids'),"/file.csv")))
 
       Big_1 <- Big_1[,c(2,8)]
 
@@ -506,50 +506,75 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       #str(Incomplete3)
 
+      ## Convert according to the MED_conversion_table.csv
+
+      MED_conversion_table <- read.csv(paste0(system.file('extdata', package = 'OralOpioids'),"/MED_conversion_table.csv"))
+
       Incomplete3$Opioid_2 <- suppressWarnings(as.numeric(Incomplete3$Opioid_2))
-
-      Incomplete3$MED_per_dispensing_unit<- ifelse (Incomplete3$Opioid_1 %in% c("BUPRENORPHINE","NALOXONE"),
-                                                    "Couldn't be calculated",Incomplete3$MED_per_dispensing_unit)
-
-      #str(Incomplete3)
-
       Incomplete3$Base1 <- suppressWarnings(as.numeric(Incomplete3$Base1))
 
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route %in% c("BUCCAL","SUBLINGUAL") & Incomplete3$Opioid_1=="FENTANYL"),
-                                                     ((Incomplete3$Opioid_2*0.13)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+
+      for (o in 1:length(Incomplete3$Opioid_1)){
+        ##TODEL
+        print(Incomplete3$Opioid_1[o])
+        print(Incomplete3$Opioid_2[o])
+        print(Incomplete3$Base1[o])
+
+        opiod_rows <- MED_conversion_table[grep(Incomplete3$Opioid_1[o], MED_conversion_table$Opiod),]
+
+        ## if opiod was in table
+        if (nrow(opiod_rows) > 0){
+          MED_conversion <- opiod_rows[grepl(Incomplete3$Route[o], opiod_rows),]$MED_factor
+          if (length(MED_conversion) == 0){
+            Incomplete3$MED_per_dispensing_unit[o] <- "Couldn't be calculated"
+          } else {
+            Incomplete3$MED_per_dispensing_unit[o] <- ((Incomplete3$Opioid_2[o]*MED_conversion)/Incomplete3$Base1[o])
+          }
+        } else{
+          Incomplete3$MED_per_dispensing_unit[o] <- "Couldn't be calculated"
+        }
 
 
+        # Incomplete3$MED_per_dispensing_unit <- ifelse (Incomplete3$Opioid_1 %in% c("BUPRENORPHINE","NALOXONE"),
+        #                                               "Couldn't be calculated",Incomplete3$MED_per_dispensing_unit)
+        #
+        # #str(Incomplete3)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route %in% c("BUCCAL","SUBLINGUAL") & Incomplete3$Opioid_1=="FENTANYL"),
+        #                                                ((Incomplete3$Opioid_2*0.13)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="CODEINE"),
+        #                                                ((Incomplete3$Opioid_2*0.15)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="HYDROCODONE"),
+        #                                                ((Incomplete3$Opioid_2*1)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="OXYCODONE"),
+        #                                                ((Incomplete3$Opioid_2*1.5)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="HYDROMORPHONE"),
+        #                                                ((Incomplete3$Opioid_2*4)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "RECTAL" & Incomplete3$Opioid_1=="MORPHINE"),
+        #                                                ((Incomplete3$Opioid_2*3)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="MORPHINE"),
+        #                                                ((Incomplete3$Opioid_2*1)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #
+        # Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="OXYMORPHONE"),
+        #                                                ((Incomplete3$Opioid_2*3)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+        #str(Incomplete3)
+        ##TODEL
+        print(Incomplete3$MED_per_dispensing_unit[o])
+        if (Incomplete3$MED_per_dispensing_unit[o] != "Couldn't be calculated"){
+          Incomplete3$MED_per_dispensing_unit[o] <- suppressWarnings(as.numeric(Incomplete3$MED_per_dispensing_unit[o]))
 
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="CODEINE"),
-                                                     ((Incomplete3$Opioid_2*0.15)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+          Incomplete3$MED_per_dispensing_unit[o] <- round (Incomplete3$MED_per_dispensing_unit[o],1)
 
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="HYDROCODONE"),
-                                                     ((Incomplete3$Opioid_2*1)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+          Incomplete3$MED_per_dispensing_unit[o] <- as.character(Incomplete3$MED_per_dispensing_unit[o])
+        }
 
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="OXYCODONE"),
-                                                     ((Incomplete3$Opioid_2*1.5)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
-
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="HYDROMORPHONE"),
-                                                     ((Incomplete3$Opioid_2*4)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
-
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "RECTAL" & Incomplete3$Opioid_1=="MORPHINE"),
-                                                     ((Incomplete3$Opioid_2*3)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
-
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="MORPHINE"),
-                                                     ((Incomplete3$Opioid_2*1)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
-
-      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="OXYMORPHONE"),
-                                                     ((Incomplete3$Opioid_2*3)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
-      #str(Incomplete3)
-
-      Incomplete3$MED_per_dispensing_unit <- suppressWarnings(as.numeric(Incomplete3$MED_per_dispensing_unit))
-
-      Incomplete3$MED_per_dispensing_unit <- round (Incomplete3$MED_per_dispensing_unit,1)
-
-      Incomplete3$MED_per_dispensing_unit <- as.character(Incomplete3$MED_per_dispensing_unit)
-
-      Incomplete3$MED_per_dispensing_unit <- ifelse (Incomplete3$MED_per_dispensing_unit== "0","Couldn't be calculated",Incomplete3$MED_per_dispensing_unit)
-
+      }
       #colnames (Incomplete2)
 
       Incomplete2 <- Incomplete2 [,c(1:10)]
