@@ -446,7 +446,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
       Big_1 <- unique (Big_1)
 
-      str(Big_1)
 
       Big_1 <- Big_1%>%
         dplyr::arrange(Big_1$DIN,desc(Big_1$MED_per_dispensing_unit))%>%
