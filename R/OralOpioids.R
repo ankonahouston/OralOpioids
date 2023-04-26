@@ -518,6 +518,9 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route %in% c("BUCCAL","SUBLINGUAL") & Incomplete3$Opioid_1=="FENTANYL"),
                                                      ((Incomplete3$Opioid_2*0.13)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
 
+      Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route=="TRANSDERMAL" & Incomplete3$Opioid_1=="FENTANYL"),
+                                                     ((Incomplete3$Opioid_2*2.4)/Incomplete3$Base1),Incomplete3$MED_per_dispensing_unit)
+
 
 
       Incomplete3$MED_per_dispensing_unit <- ifelse ((Incomplete3$Route== "ORAL" & Incomplete3$Opioid_1=="CODEINE"),
