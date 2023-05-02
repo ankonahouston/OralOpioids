@@ -9,7 +9,7 @@
 #' @name OralOpioids
   NULL
 
-## Version 1.0.1
+## Version 1.1.0
 
 #'Obtain the latest Opioid data from Health Canada
 #'
@@ -438,9 +438,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       Opioids_2$Form_1 <- ifelse (((grepl("TABLET", Opioids_2$Form))|(grepl("CAPSULE", Opioids_2$Form))), "CAPTAB", Opioids_2$Form)
       Opioids_2$Form_1 <- ifelse ((grepl("SYRUP|TINCTURE|ELIXIR|DROPS|SOLUTION|LIQUID|SUSPENSION",Opioids_2$Form)),"LIQUID", Opioids_2$Form_1)
 
-      files <- lapply(list.files(system.file('extdata', package = 'OralOpioids'), full.names = TRUE), utils::read.csv)
-
-      Big_1 <- as.data.frame(files)
+      Big_1 <- as.data.frame(utils::read.csv(paste0(system.file('extdata', package = 'OralOpioids'),"/old_data.csv")))
 
       Big_1 <- Big_1[,c(2,8)]
 
