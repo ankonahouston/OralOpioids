@@ -10,7 +10,7 @@
 #' @aliases OralOpioids-package
   NULL
 
-## Version 1.1.0
+## Version 1.2.0
 
 #'Obtain the latest Opioid data from Health Canada
 #'
