@@ -3,6 +3,7 @@
 \docType{package}
 \name{OralOpioids}
 \alias{OralOpioids}
+\alias{OralOpioids-package}
 \title{OralOpioids: Obtain the latest information on Morphine equivalent doses provided by HealthCanada}
 \description{
 This package provides details on Oral Opioids approved for sale by Health Canada.
