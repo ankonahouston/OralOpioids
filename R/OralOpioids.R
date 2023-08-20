@@ -7,6 +7,7 @@
 #'
 #' @docType package
 #' @name OralOpioids
+#' @aliases OralOpioids-package
   NULL
 
 ## Version 1.1.0
