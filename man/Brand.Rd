@@ -2,15 +2,15 @@
 % Please edit documentation in R/OralOpioids.R
 \name{Brand}
 \alias{Brand}
-\title{Get the Brand name from Health Canada by using the DIN}
+\title{Get the Brand name from Health Canada by using the DIN or NDC}
 \usage{
-Brand(Drug_ID, HealthCanada_Opioid_Table)
+Brand(Drug_ID, Opioid_Table)
 }
 \arguments{
-\item{Drug_ID}{A numeric value for the DIN. Exclude all zeros in front}
+\item{Drug_ID}{A numeric value for the DIN or NDC. Exclude all zeros in front.}
 
-\item{HealthCanada_Opioid_Table}{Health Canada opioid dataset which can be loaded by using
-the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.}
+\item{Opioid_Table}{Opioid dataset which can be loaded by using
+the \code{load_HealthCanada_Opioid_Table()} or \code{load_FDA_Opioid_Table()} function. The name you use to call the function should be input here.}
 }
 \value{
 Brand name
@@ -20,7 +20,8 @@ Brand name
 }
 \examples{
 
-HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+FDA_Opioid_Table <- load_Opioid_Table(no_download = TRUE, country="US")
+HealthCanada_Opioid_Table <- load_Opioid_Table(no_download = TRUE, country="Canada")
 Brand(786535, HealthCanada_Opioid_Table)
-
+Brand("0093-0058", FDA_Opioid_Table)
 }

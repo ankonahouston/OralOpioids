@@ -1,5 +1,5 @@
 .Rproj.user
 .Rhistory
-inst/doc
-OralOpioids.Rproj
-.Rhistory
+.RData
+.Ruserdata
+drug-ndc-0001-of-0001.json

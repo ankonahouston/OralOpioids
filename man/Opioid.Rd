@@ -2,25 +2,26 @@
 % Please edit documentation in R/OralOpioids.R
 \name{Opioid}
 \alias{Opioid}
-\title{Get the Opioid content from Health Canada by using the DIN}
+\title{Get the Opioid content from Health Canada by using the DIN or NDC}
 \usage{
-Opioid(Drug_ID, HealthCanada_Opioid_Table)
+Opioid(Drug_ID, Opioid_Table)
 }
 \arguments{
-\item{Drug_ID}{A numeric value for the DIN. Exclude all zeros in front}
+\item{Drug_ID}{A numeric value for the DIN or NDC. Exclude all zeros in front.}
 
-\item{HealthCanada_Opioid_Table}{Health Canada opioid dataset which can be loaded by using
-the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.}
+\item{Opioid_Table}{Opioid dataset which can be loaded by using
+the \code{load_HealthCanada_Opioid_Table()} or \code{load_FDA_Opioid_Table()} function. The name you use to call the function should be input here.}
 }
 \value{
 Opioid content
 }
 \description{
-\code{Opioid} retrieves the Opioid content from the HealthCanada_Opioid_Table.
+\code{Opioid} retrieves the Opioid content from the Opioid_Table.
 }
 \examples{
 
-HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+FDA_Opioid_Table <- load_Opioid_Table(no_download = TRUE, country="US")
+HealthCanada_Opioid_Table <- load_Opioid_Table(no_download = TRUE, country="Canada")
 Opioid(786535, HealthCanada_Opioid_Table)
-
+Opioid("0093-0058", FDA_Opioid_Table)
 }
