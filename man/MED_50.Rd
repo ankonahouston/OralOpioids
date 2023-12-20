@@ -2,15 +2,15 @@
 % Please edit documentation in R/OralOpioids.R
 \name{MED_50}
 \alias{MED_50}
-\title{Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 50 MED/day for a DIN from the HealthCanada Opioid Table by using the DIN}
+\title{Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 50 MED/day for a DIN or NDC from the Opioid Table by using the DIN or NDC}
 \usage{
-MED_50(Drug_ID, HealthCanada_Opioid_Table)
+MED_50(Drug_ID, Opioid_Table)
 }
 \arguments{
-\item{Drug_ID}{A numeric value for the DIN. Exclude all zeros in front}
+\item{Drug_ID}{A numeric value for the DIN or NDC. Exclude all zeros in front.}
 
-\item{HealthCanada_Opioid_Table}{Health Canada opioid dataset which can be loaded by using
-the \code{load_HealthCanada_Opioid_Table()} function. Please run \code{load_HealthCanada_Opioid_Table()} function. The name you use to call the function should be input here.}
+\item{Opioid_Table}{Opioid dataset which can be loaded by using
+the \code{load_HealthCanada_Opioid_Table()} or \code{load_FDA_Opioid_Table()} function. The name you use to call the function should be input here.}
 }
 \value{
 no. of units to reach 50 MED
@@ -20,7 +20,9 @@ no. of units to reach 50 MED
 }
 \examples{
 
-HealthCanada_Opioid_Table <- load_HealthCanada_Opioid_Table(no_download = TRUE)
+FDA_Opioid_Table <- load_Opioid_Table(no_download = TRUE, country="US")
+HealthCanada_Opioid_Table <- load_Opioid_Table(no_download = TRUE, country="Canada")
 MED_50(786535, HealthCanada_Opioid_Table)
+MED_50("0093-0058", FDA_Opioid_Table)
 
 }
