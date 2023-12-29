@@ -9,7 +9,7 @@
 #' @aliases OralOpioids-package
   NULL
 
-## Version 2.0.0
+## Version 2.0.1
 
 #'Obtain the latest Opioid data from Health Canada
 #'
@@ -1002,7 +1002,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       g1 <- drug[,c("product_ndc","pharm_class")]
 
       colnames(g1) <- c("colA","colB")
-      h1 <- g1 %>% tidyr::unnest(.data$colB)
+      h1 <- g1 %>% tidyr::unnest(colB)
 
       h1 <- unique(h1)
 
@@ -1021,7 +1021,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       b1 <- merge(b1,Opioid_ndc,by="product_ndc")
 
       colnames(b1) <- c("colA","colB","brand_name")
-      c <- b1 %>% tidyr::unnest(.data$colB, .data$brand_name)
+      c <- b1 %>% tidyr::unnest(c(colB, brand_name))
 
       c <- unique(c)
 
@@ -1110,12 +1110,22 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
 
       drug2$Opioid_1 <- stringr::word(drug2$name, 1)
 
-      colnames(drug2)
-      drug2 <- drug2[,c(1,4,5,7:9,13,14,15,16,17,20,21)]
+      ##TODO Ankona check (select from list below)
+      # [1] "product_ndc"        "route.x"            "dosage_form.x"      "name"
+      # [5] "strength"           "brand_name.x"       "Base1"              "Base2"
+      # [9] "Base3"              "ingred"             "c1$product_ndc"     "ranks"
+      # [13] "generic_name"       "brand_name.y"       "active_ingredients" "marketing_category"
+      # [17] "dosage_form.y"      "route.y"            "brand_name_base"    "pharm_class"
+      # [21] "Ingredients"        "Opioid_1"
+
+      drug2 <- drug2[,c("product_ndc","name","strength","Base1","Base2","Base3",
+                        "generic_name", "brand_name.y","active_ingredients","marketing_category",
+                        "dosage_form.y","brand_name_base","pharm_class",
+                        "Ingredients","Opioid_1")]
       names(drug2)[c(7,10,11)] <- c("brand_name","dosage_form","route")
 
-      drug2$MED <-0
-      drug2$MED<- ifelse (drug2$Opioid_1 %in% c("BUPRENORPHINE","NALOXONE"),
+      drug2$MED <- 0
+      drug2$MED <- ifelse (drug2$Opioid_1 %in% c("BUPRENORPHINE","NALOXONE"),
                           "Couldn't be calculated",drug2$MED)
 
 

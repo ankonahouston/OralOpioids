@@ -1,7 +1,7 @@
 Package: OralOpioids
 Type: Package
 Title: Retrieving Oral Opioid Information
-Version: 2.0.0
+Version: 2.0.1
 Authors@R: 
   c(person(family = "Banerjee",
            given = "Ankona",
