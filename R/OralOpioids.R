@@ -845,16 +845,16 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 #'@return The function returns the FDA_Opioid_Table as a data.frame. Comments on the data.frame
 #'include a status message (msg), the FDA_Opioid_Table save path (path),
 #'a disclaimer, and the source for the retrieved data (source_url_data and source_url_dosing).
-#'
+
+#' @import utils
+#' @importFrom magrittr "%>%"
 #' @importFrom openxlsx read.xlsx write.xlsx
-#' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom stringr str_split str_sub word
 #' @importFrom readr parse_number
 #' @importFrom reshape2 dcast
 #' @importFrom tidyr unnest
 #' @importFrom jsonlite fromJSON
-#' @import utils
 #' @rawNamespace import(dplyr, except = rename)
 #' @importFrom plyr rename
 #' @importFrom rvest html_table
@@ -1003,7 +1003,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       g1 <- drug[,c("product_ndc","pharm_class")]
 
       colnames(g1) <- c("colA","colB")
-      h1 <- g1 %>% tidyr::unnest(colB)
+      h1 <- g1 %>% tidyr::unnest(.data$colB)
 
       h1 <- unique(h1)
 
@@ -1022,7 +1022,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       b1 <- merge(b1,Opioid_ndc,by="product_ndc")
 
       colnames(b1) <- c("colA","colB","brand_name")
-      c <- b1 %>% tidyr::unnest(c(colB, brand_name))
+      c <- b1 %>% tidyr::unnest(c(.data$colB, .data$brand_name))
 
       c <- unique(c)
 
