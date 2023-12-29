@@ -26,7 +26,7 @@ License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Imports: dplyr, tidyr, readr, purrr, plyr,jsonlite, 
-        reshape2, stringr, openxlsx, rvest, xml2, utils, rlang
+        reshape2, stringr, openxlsx, rvest, xml2, utils, rlang,magrittr
 Suggests: knitr, rmarkdown
 Depends: R (>= 2.10)
 VignetteBuilder: knitr

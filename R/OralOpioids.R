@@ -847,6 +847,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 #'a disclaimer, and the source for the retrieved data (source_url_data and source_url_dosing).
 #'
 #' @importFrom openxlsx read.xlsx write.xlsx
+#' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom stringr str_split str_sub word
 #' @importFrom readr parse_number
