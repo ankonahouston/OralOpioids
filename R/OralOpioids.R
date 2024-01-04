@@ -399,8 +399,8 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
 
 
-      status <- status[,-3]
-
+      status <- status[,-1]
+      names(status)[3] <- "ID"
 
 
       status <- reshape2::dcast (status,ID~ ranks, value.var= "Status")
@@ -693,7 +693,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         dplyr::group_by(Big_Data$Drug_ID,Big_Data$MED_per_dispensing_unit) %>%
         dplyr::tally()
 
-
+      names(Drug_ID_count) <- c("Drug_ID","MED_per_dispensing_unit","n")
       Big_Data <- merge(Big_Data, Drug_ID_count, by= c("Drug_ID","MED_per_dispensing_unit"))
 
 
