@@ -1,5 +1,5 @@
 # OralOpioids 2.0.1
-*Fixed bug with load_FDA_Opioid_Table()
+*Fixed bug with load_FDA_Opioid_Table() and load_HealthCanada_Opioid_Table()
 
 # OralOpioids 2.0.0
 *Have added FDA Opioids and two new functions load_Opioid_Table and load_FDA_Opioid_Table to include US opioids as well. 

@@ -1223,8 +1223,15 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       colnames(drug2)[colnames(drug2) == "Threshold_14days"] <- "Maximum No_tabs/ml assuming 50 MED limit for 14 days"
       colnames(drug2)[colnames(drug2) == "Threshold_30days"] <- "Maximum No_tabs/ml assuming 50 MED limit for 30 days"
 
-      drug2$last_updated <- pmax(file_date, second_table_date)
-
+      if (length(FDA_Opioid_Table_file_indices) == 0) {
+        # If empty, just assign second_table_date to the entire column
+        drug2$last_updated <- second_table_date
+      } else {
+        # If not empty, proceed with your original logic
+        drug2$last_updated <- ifelse(!is.na(FDA_Opioid_Table_file_indices),
+                                     pmax(file_date, second_table_date),
+                                     second_table_date)
+      }
 
 
       FDA_Opioid_Table <- drug2
