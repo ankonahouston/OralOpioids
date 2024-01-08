@@ -995,8 +995,8 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       ## 1) Get FDA data
 
       temp <- tempfile()
-      download.file("https://download.open.fda.gov/drug/ndc/drug-ndc-0001-of-0001.json.zip",temp,quiet = FALSE, mode = "wb",flatten=T,simplifyVector = TRUE)
-      tmp1 <- unzip(temp)
+      download.file("https://download.open.fda.gov/drug/ndc/drug-ndc-0001-of-0001.json.zip",destfile = temp,quiet = FALSE, mode = "wb",flatten=T,simplifyVector = TRUE)
+      tmp1 <- unzip(temp, exdir = dirname(temp))
       result <- jsonlite::fromJSON(tmp1)
       unlink(temp,recursive = TRUE)
       drug <- result$results
@@ -1118,13 +1118,14 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       # [13] "generic_name"       "brand_name.y"       "active_ingredients" "marketing_category"
       # [17] "dosage_form.y"      "route.y"            "brand_name_base"    "pharm_class"
       # [21] "Ingredients"        "Opioid_1"
-
+      print(drug2[1,])
       drug2 <- drug2[,c("product_ndc","name","strength","Base1",
                         "Base2","Base3","generic_name", "brand_name.y",
                         "active_ingredients","marketing_category",
                         "dosage_form.y","brand_name_base",
                         "pharm_class",
                         "Ingredients","Opioid_1","route.y")]
+      print(drug2[1,])
       names(drug2)[c(8,11,16)] <- c("brand_name","dosage_form","route")
 
       drug2$MED <- 0
