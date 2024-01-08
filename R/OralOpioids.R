@@ -1119,11 +1119,13 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       # [17] "dosage_form.y"      "route.y"            "brand_name_base"    "pharm_class"
       # [21] "Ingredients"        "Opioid_1"
 
-      drug2 <- drug2[,c("product_ndc","name","strength","Base1","Base2","Base3",
-                        "generic_name", "brand_name.y","active_ingredients","marketing_category",
-                        "dosage_form.y","brand_name_base","pharm_class",
-                        "Ingredients","Opioid_1")]
-      names(drug2)[c(7,10,11)] <- c("brand_name","dosage_form","route")
+      drug2 <- drug2[,c("product_ndc","name","strength","Base1",
+                        "Base2","Base3","generic_name", "brand_name.y",
+                        "active_ingredients","marketing_category",
+                        "dosage_form.y","brand_name_base",
+                        "pharm_class",
+                        "Ingredients","Opioid_1","route.y")]
+      names(drug2)[c(8,11,16)] <- c("brand_name","dosage_form","route")
 
       drug2$MED <- 0
       drug2$MED <- ifelse (drug2$Opioid_1 %in% c("BUPRENORPHINE","NALOXONE"),
