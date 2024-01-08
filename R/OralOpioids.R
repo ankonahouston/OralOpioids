@@ -1231,6 +1231,9 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
         drug2$last_updated <- ifelse(!is.na(FDA_Opioid_Table_file_indices),
                                      pmax(file_date, second_table_date),
                                      second_table_date)
+
+        drug2$last_updated <-  as.Date(drug2$last_updated, origin = "1970-01-01")
+
       }
 
 
