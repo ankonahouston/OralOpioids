@@ -998,7 +998,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       download.file("https://download.open.fda.gov/drug/ndc/drug-ndc-0001-of-0001.json.zip",destfile = temp,quiet = FALSE, mode = "wb",flatten=T,simplifyVector = TRUE)
       tmp1 <- unzip(temp, exdir = dirname(temp))
       result <- jsonlite::fromJSON(tmp1)
-      unlink(temp,recursive = TRUE)
+      unlink(dirname(temp),recursive = TRUE)
       drug <- result$results
       g1 <- drug[,c("product_ndc","pharm_class")]
 
@@ -1111,21 +1111,13 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
 
       drug2$Opioid_1 <- stringr::word(drug2$name, 1)
 
-      ##TODO Ankona check (select from list below)
-      # [1] "product_ndc"        "route.x"            "dosage_form.x"      "name"
-      # [5] "strength"           "brand_name.x"       "Base1"              "Base2"
-      # [9] "Base3"              "ingred"             "c1$product_ndc"     "ranks"
-      # [13] "generic_name"       "brand_name.y"       "active_ingredients" "marketing_category"
-      # [17] "dosage_form.y"      "route.y"            "brand_name_base"    "pharm_class"
-      # [21] "Ingredients"        "Opioid_1"
-      print(drug2[1,])
       drug2 <- drug2[,c("product_ndc","name","strength","Base1",
                         "Base2","Base3","generic_name", "brand_name.y",
                         "active_ingredients","marketing_category",
                         "dosage_form.y","brand_name_base",
                         "pharm_class",
                         "Ingredients","Opioid_1","route.y")]
-      print(drug2[1,])
+
       names(drug2)[c(8,11,16)] <- c("brand_name","dosage_form","route")
 
       drug2$MED <- 0
@@ -1360,9 +1352,10 @@ MED <- function(Drug_ID,Opioid_Table){
 
     out_MED_per_dispensing_unit <- suppressWarnings(as.numeric(a$MED_per_dispensing_unit))
     if (is.na(out_MED_per_dispensing_unit[1])){
-      out_MED_per_dispensing_unit <- a$MED_per_dispensing_unit
+      return("MED for this Drug_ID couldn't be calculated.")
+    }else {
+      return(out_MED_per_dispensing_unit)
     }
-    return(out_MED_per_dispensing_unit)
   }
   else return("The Drug_ID could not be found in the Opioid_Table.")
 }
@@ -1445,11 +1438,14 @@ MED_50 <- function(Drug_ID,Opioid_Table){
     a <- Opioid_Table[which(Opioid_Table$Drug_ID == Drug_ID),]
     out_MED50_per_dispensing_unit <- suppressWarnings(as.numeric(a$`No_tabs/ml assuming 50 MED limit per day`))
     if (is.na(out_MED50_per_dispensing_unit[1])){
-      out_MED50_per_dispensing_unit <- a$`No_tabs/ml assuming 50 MED limit per day`
+      return("MED_50 for this Drug_ID couldn't be calculated.")
+    }else {
+      return(out_MED50_per_dispensing_unit)
     }
-    return(out_MED50_per_dispensing_unit)
-  } else return("The Drug_ID could not be found in the Opioid_Table.")
+  }
+  else return("The Drug_ID could not be found in the Opioid_Table.")
 }
+
 
 #'Maximum number of units/millilitres of oral opioids allowed per day assuming a daily limit of 90 MED/day for a DIN or NDC from the Opioid Table by using the DIN the NDC
 #'
@@ -1475,13 +1471,13 @@ MED_90 <- function(Drug_ID,Opioid_Table){
     a <- Opioid_Table[which(Opioid_Table$Drug_ID == Drug_ID),]
     out_MED90_per_dispensing_unit <- suppressWarnings(as.numeric(a$`No_tabs/ml assuming 90 MED limit per day`))
     if (is.na(out_MED90_per_dispensing_unit[1])){
-      out_MED90_per_dispensing_unit <- a$`No_tabs/ml assuming 90 MED limit per day`
+      return("MED_90 for this Drug_ID couldn't be calculated.")
+    }else {
+      return(out_MED90_per_dispensing_unit)
     }
-    return(out_MED90_per_dispensing_unit)
-  } else return("The Drug_ID could not be found in the Opioid_Table.")
+  }
+  else return("The Drug_ID could not be found in the Opioid_Table.")
 }
-
-
 
 
 
