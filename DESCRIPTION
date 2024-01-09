@@ -21,7 +21,7 @@ Description: Provides details such as Morphine Equivalent Dose (MED),
     and information obtained from Health Canada's Drug Product Database's monthly data dump or FDA Daily database for Canadian and US databases respectively. 
     Please note in no way should output from this package be a substitute for medical advise.  
     All medications should only be consumed on prescription from a licensed healthcare provider.
-URL: "https://github.com/ankonahouston/OralOpioids"
+URL: https://github.com/ankonahouston/OralOpioids
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
