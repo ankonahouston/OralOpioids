@@ -9,7 +9,7 @@
 #' @aliases OralOpioids-package
   NULL
 
-## Version 2.0.1
+## Version 2.0.2
 
 #'Obtain the latest Opioid data from Health Canada
 #'
@@ -187,6 +187,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
       #filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
       tempdownload_location <- tempdir()
       temp <- tempfile()
+      suppressWarnings(dir.create(dirname(temp)))
       utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
       unzip(temp,exdir= paste0(tempdownload_location,"/txtfiles"))
       schedule <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/schedule.txt"),header=F)
@@ -995,6 +996,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       ## 1) Get FDA data
 
       temp <- tempfile()
+      suppressWarnings(dir.create(dirname(temp)))
       download.file("https://download.open.fda.gov/drug/ndc/drug-ndc-0001-of-0001.json.zip",destfile = temp,quiet = FALSE, mode = "wb",flatten=T,simplifyVector = TRUE)
       tmp1 <- unzip(temp, exdir = dirname(temp))
       result <- jsonlite::fromJSON(tmp1)
@@ -1217,6 +1219,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
       colnames(drug2)[colnames(drug2) == "Threshold_7days"] <- "Maximum No_tabs/ml assuming 50 MED limit for 7 days"
       colnames(drug2)[colnames(drug2) == "Threshold_14days"] <- "Maximum No_tabs/ml assuming 50 MED limit for 14 days"
       colnames(drug2)[colnames(drug2) == "Threshold_30days"] <- "Maximum No_tabs/ml assuming 50 MED limit for 30 days"
+
 
       if (length(FDA_Opioid_Table_file_indices) == 0) {
         # If empty, just assign second_table_date to the entire column

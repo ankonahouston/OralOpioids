@@ -1,3 +1,6 @@
+# OralOpioids 2.0.2
+*Fixed bug with json file location
+
 # OralOpioids 2.0.1
 *Fixed bug with load_FDA_Opioid_Table() and load_HealthCanada_Opioid_Table()
 
