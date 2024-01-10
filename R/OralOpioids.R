@@ -80,7 +80,11 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
     list_of_HealthCanada_Opioid_Table_files <- NULL
     for (i in HealthCanada_Opioid_Table_file_indices){
       file_date <- as.Date(as.character(substr(downloaded_files[i],1,10)))
-      list_of_dates <- c(list_of_dates,file_date)
+      if (length(list_of_dates) == 0){
+        list_of_dates <- file_date
+      } else {
+        list_of_dates <- c(list_of_dates,file_date)
+      }
       list_of_HealthCanada_Opioid_Table_files <- c(list_of_HealthCanada_Opioid_Table_files,downloaded_files[i])
       ##if a file is has the same or a newer date than the second_table_date
       ##the HealthCanada_Opioid_Table is up to date
