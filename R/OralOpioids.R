@@ -68,7 +68,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
   second_table_date <- as.Date(as.character(second_table_date))
 
-  ## Get HealthCanada_Opioid_Table date ---------------------
   HealthCanada_Opioid_Table_is_old <- TRUE
   HealthCanada_Opioid_Table_files_exist <- FALSE
   ## List all files in filelocation
@@ -891,7 +890,11 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
     list_of_FDA_Opioid_Table_files <- NULL
     for (i in FDA_Opioid_Table_file_indices){
       file_date <- as.Date(as.character(substr(downloaded_files[i],1,10)))
-      list_of_dates <- c(list_of_dates,file_date)
+      if (length(list_of_dates) == 0){
+        list_of_dates <- file_date
+      } else {
+        list_of_dates <- c(list_of_dates,file_date)
+      }
       file_date <- max(list_of_dates)
       list_of_FDA_Opioid_Table_files <- c(list_of_FDA_Opioid_Table_files,downloaded_files[i])
       ##if a file is has the same or a newer date than the second_table_date
