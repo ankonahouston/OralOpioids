@@ -892,6 +892,7 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
     for (i in FDA_Opioid_Table_file_indices){
       file_date <- as.Date(as.character(substr(downloaded_files[i],1,10)))
       list_of_dates <- c(list_of_dates,file_date)
+      file_date <- max(list_of_dates)
       list_of_FDA_Opioid_Table_files <- c(list_of_FDA_Opioid_Table_files,downloaded_files[i])
       ##if a file is has the same or a newer date than the second_table_date
       ##the FDAOpioid_Table is up to date
@@ -1226,13 +1227,14 @@ load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbos
         drug2$last_updated <- second_table_date
       } else {
         # If not empty, proceed with your original logic
-        drug2$last_updated <- ifelse(!is.na(FDA_Opioid_Table_file_indices),
+        drug2$last_updated <- ifelse(!is.na(length(FDA_Opioid_Table_file_indices)),
                                      pmax(file_date, second_table_date),
                                      second_table_date)
-
         drug2$last_updated <-  as.Date(drug2$last_updated, origin = "1970-01-01")
-
       }
+
+
+
 
 
       FDA_Opioid_Table <- drug2

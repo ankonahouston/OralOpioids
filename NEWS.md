@@ -1,3 +1,6 @@
+# OralOpioids 2.0.3
+*Fixed bug with latest dates
+
 # OralOpioids 2.0.2
 *Fixed bug with json file location
 
