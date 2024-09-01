@@ -1,7 +1,7 @@
 #Here is the mock R code
 library(readr)
 
-#Access prescription database. I am using DIN but NDC could also be used. We need the number of tablets or ml of opioid containing liquid dispensed 
+#Access prescription database. I am using DIN but NDC could also be used. We need the number of tablets or ml of opioid containing liquid dispensed
 colnames (Database) <- c("Patient_ID","prescription_date","paid_quantity",
                            "DIN","Prescription_no")
 
@@ -17,8 +17,8 @@ Opioid_Prescriptions <- merge(Database,b,by.x="DIN",by.y= "Drug_ID")
 
 Opioid_Prescriptions$prescription_date <- (as.character(as.Date (Opioid_Prescriptions$prescription_date)))
 
-#If I want to identify the MED for say August 2024. 
-Opioid_Prescriptions <- subset (Opioid_Prescriptions,prescription_date >as.Date("2024-08-01") & prescription_date >as.Date("2024-08-31"))
+#If I want to identify the MED for say August 2024.
+Opioid_Prescriptions <- subset (Opioid_Prescriptions,prescription_date >as.Date("2024-08-01") & prescription_date <as.Date("2024-09-01"))
 
 # Cleaning the data
 Opioid_Prescriptions$MED_per_dispensing_unit <- as.numeric(Opioid_Prescriptions$MED_per_dispensing_unit)
