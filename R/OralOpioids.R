@@ -51,7 +51,8 @@
 
 #' @export
   load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE){
-
+    # Suppress warnings for the entire function
+    suppressWarnings({
     if (filelocation == ""){
       filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
     }
@@ -86,6 +87,8 @@
         stop("No internet connection and no local data available.")
       }
     }
+
+
 
     content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
     tables <- content %>%
@@ -857,9 +860,8 @@
       }
     }
     return(out)
-  }
-
-
+  })
+}
 
 #'Obtain the latest Opioid data from the FDA
 #'
@@ -897,7 +899,10 @@
 #'   head(FDA_Opioid_Table)
 #' @export
   load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE) {
-    if (filelocation == "") {
+    # Suppress warnings for the entire function
+    suppressWarnings({
+
+     if (filelocation == "") {
       filelocation <- paste0(system.file(package = "OralOpioids"), "/download")
     }
 
@@ -1339,6 +1344,7 @@
       }
     }
     return(out)
+    })
   }
 
 #'Obtain the latest Opioid data
