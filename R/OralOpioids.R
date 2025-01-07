@@ -57,36 +57,51 @@
       filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
     }
 
-    ## 1) Get HealthCanada data date and compare with HealthCanada_Opioid_Table date
-    ## Get HealthCanada data date ------------------------
-    # Helper function to check internet connectivity
-    check_internet <- function() {
-      tryCatch({
-        utils::download.file("http://www.google.com", tempfile(), quiet = TRUE)
-        TRUE
-      }, error = function(e) FALSE)
-    }
-
-    # Check internet connection
-    internet_available <- check_internet()
-
-    if (!internet_available) {
-      if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
-
-      # Attempt to load the latest local data
-      downloaded_files <- list.files(filelocation)
-      latest_file <- downloaded_files[grep("HealthCanada_Opioid_Table", downloaded_files)]
-
-      if (length(latest_file) > 0) {
-        latest_file_path <- paste0(filelocation, "/", latest_file[which.max(as.Date(sub("_HealthCanada_Opioid_Table.*$", "", latest_file)))])
-        if (verbose) cat("Loading local file:", latest_file_path, "\n")
-
-        HealthCanada_Opioid_Table <- openxlsx::read.xlsx(latest_file_path, sep.names = " ")
-        return(HealthCanada_Opioid_Table)
-      } else {
-        stop("No internet connection and no local data available.")
+       ## 1) Get HealthCanada data date and compare with HealthCanada_Opioid_Table date
+      ## Get HealthCanada data date ------------------------
+      # Helper function to check internet connectivity
+      check_internet <- function() {
+        tryCatch({
+          httr::HEAD(
+            url = "https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html",
+            config = httr::timeout(5)
+          )
+          TRUE
+        }, error = function(e) {
+          message("Internet check failed: ", e$message)
+          FALSE
+        })
       }
-    }
+
+      # Check internet connection
+      internet_available <- TRUE
+      if (!no_download) {
+        internet_available <- check_internet()
+      }
+
+      if (!internet_available) {
+        if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
+
+        # Attempt to load the latest local data
+        downloaded_files <- list.files(filelocation)
+        latest_file <- downloaded_files[grep("HealthCanada_Opioid_Table", downloaded_files)]
+
+        if (length(latest_file) > 0) {
+          latest_file_path <- paste0(filelocation, "/", latest_file[which.max(as.Date(sub("_HealthCanada_Opioid_Table.*$", "", latest_file)))])
+          if (verbose) cat("Loading local file:", latest_file_path, "\n")
+
+          HealthCanada_Opioid_Table <- openxlsx::read.xlsx(latest_file_path, sep.names = " ")
+          return(HealthCanada_Opioid_Table)
+        } else {
+          stop("No internet connection and no local data available.")
+        }
+      }
+
+      ## Fetch the latest data from the website
+      health_canada_url <- "https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html"
+      content <- tryCatch({
+        xml2::read_html(health_canada_url)
+      }, error = function(e) stop("Unable to fetch data from Health Canada website."))
 
 
 
@@ -906,19 +921,29 @@
       filelocation <- paste0(system.file(package = "OralOpioids"), "/download")
     }
 
-    # Helper function to check internet connectivity
-    check_internet <- function() {
-      tryCatch({
-        utils::download.file("http://www.google.com", tempfile(), quiet = TRUE)
-        TRUE
-      }, error = function(e) FALSE)
-    }
+      # Helper function to check internet connectivity
+      check_internet <- function() {
+        tryCatch({
+          httr::HEAD(
+            url = "https://www.fda.gov/drugs/drug-safety-and-availability/drug-data-dashboard",
+            config = httr::timeout(5)
+          )
+          TRUE
+        }, error = function(e) {
+          message("Internet check failed: ", e$message)
+          FALSE
+        })
+      }
 
-    # Check internet connection
-    internet_available <- check_internet()
+      # Check internet connection only if no_download is FALSE
+      internet_available <- TRUE
+      if (!no_download) {
+        internet_available <- check_internet()
+      }
 
-    if (!internet_available) {
-      if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
+      if (!internet_available && !no_download) {
+        if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
+
 
       # Attempt to load the latest local data
       downloaded_files <- list.files(filelocation)
