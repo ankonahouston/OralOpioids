@@ -908,6 +908,7 @@
 #' @rawNamespace import(dplyr, except = rename)
 #' @importFrom plyr rename
 #' @importFrom rvest html_table
+#' @importFrom httr HEAD timeout
 #' @rawNamespace import(xml2, except= as_list)
 #' @rawNamespace import(purrr, except= c(invoke,flatten_raw))
 #' @examples
