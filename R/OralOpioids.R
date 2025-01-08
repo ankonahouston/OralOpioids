@@ -108,7 +108,7 @@
         return(NULL)
       })
 
-    content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
+    #content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
     tables <- content %>%
       rvest::html_table(fill = TRUE)
     second_table <- tables[[2]]
