@@ -58,7 +58,7 @@
       filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
     }
 
-       ## 1) Get HealthCanada data date and compare with HealthCanada_Opioid_Table date
+      ## 1) Get HealthCanada data date and compare with HealthCanada_Opioid_Table date
       ## Get HealthCanada data date ------------------------
       # Helper function to check internet connectivity
       check_internet <- function() {
@@ -69,7 +69,7 @@
           )
           TRUE
         }, error = function(e) {
-          message("Internet check failed: ", e$message)
+          if (verbose) message("Internet check failed: ", e$message)
           FALSE
         })
       }
@@ -81,7 +81,7 @@
       }
 
       if (!internet_available) {
-        if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
+        if (verbose) cat("No internet connection. Attempting to use the latest available local data if present.\n")
 
         # Attempt to load the latest local data
         downloaded_files <- list.files(filelocation)
@@ -94,7 +94,8 @@
           HealthCanada_Opioid_Table <- openxlsx::read.xlsx(latest_file_path, sep.names = " ")
           return(HealthCanada_Opioid_Table)
         } else {
-          stop("No internet connection and no local data available.")
+          if (verbose) cat("No internet connection and no local data available. Returning NULL.\n")
+          return(NULL)
         }
       }
 
@@ -102,9 +103,10 @@
       health_canada_url <- "https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html"
       content <- tryCatch({
         xml2::read_html(health_canada_url)
-      }, error = function(e) stop("Unable to fetch data from Health Canada website."))
-
-
+      }, error = function(e) {
+        if (verbose) message("Unable to fetch data from Health Canada website: ", e$message)
+        return(NULL)
+      })
 
     content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
     tables <- content %>%
