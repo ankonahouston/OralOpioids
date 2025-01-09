@@ -1,5 +1,5 @@
 # OralOpioids 2.0.4
-*Added codes so that just in case internet fails there is an error. 
+*Added codes so that just in case internet fails there is no error. 
 
 # OralOpioids 2.0.3
 *Fixed bug with latest dates
