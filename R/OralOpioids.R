@@ -7,7 +7,7 @@
 #' @docType package
 #' @name OralOpioids
 #' @aliases OralOpioids-package
-  NULL
+NULL
 
 ## Version 2.0.4
 
@@ -43,6 +43,7 @@
 #' @importFrom  rvest html_table
 #' @importFrom rlang .data
 #' @importFrom httr HEAD timeout
+#' @importFrom writexl write_xlsx
 #' @rawNamespace import (xml2, except= as_list)
 #' @rawNamespace import (purrr,except= c(invoke,flatten_raw,flatten))
 #' @examples
@@ -51,67 +52,68 @@
 
 
 #' @export
-  load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE){
-    # Suppress warnings for the entire function
-    suppressWarnings({
-    if (filelocation == ""){
-      filelocation <- paste0(system.file(package = "OralOpioids"),"/download")
+
+load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE) {
+  suppressWarnings({
+    # Set default filelocation if not provided
+    if (filelocation == "") {
+      filelocation <- paste0(system.file(package = "OralOpioids"), "/download")
     }
 
-      check_internet <- function() {
-        tryCatch({
-          httr::HEAD(
-            url = "https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html",
-            config = httr::timeout(5)
-          )
-          TRUE
-        }, error = function(e) {
-          if (verbose) message("Internet check failed: ", e$message)
-          FALSE
-        })
-      }
+    # Ensure the filelocation directory exists
+    if (!dir.exists(filelocation)) {
+      dir.create(filelocation, recursive = TRUE)
+      if (verbose) cat("Created directory:", filelocation, "\n")
+    }
 
-      # Check internet connection
-      internet_available <- TRUE
-      if (!no_download) {
-        internet_available <- check_internet()
-      }
-
-      if (!internet_available) {
-        if (verbose) cat("No internet connection. Attempting to use the latest available local data if present.\n")
-
-        # Attempt to load the latest local data
-        downloaded_files <- list.files(filelocation)
-        latest_file <- downloaded_files[grep("HealthCanada_Opioid_Table", downloaded_files)]
-
-        if (length(latest_file) > 0) {
-          latest_file_path <- paste0(filelocation, "/", latest_file[which.max(as.Date(sub("_HealthCanada_Opioid_Table.*$", "", latest_file)))])
-          if (verbose) cat("Loading local file:", latest_file_path, "\n")
-
-          HealthCanada_Opioid_Table <- openxlsx::read.xlsx(latest_file_path, sep.names = " ")
-          return(HealthCanada_Opioid_Table)
-        } else {
-          if (verbose) cat("No internet connection and no local data available. Returning NULL.\n")
-          return(NULL)
-        }
-      }
-
-      ## Fetch the latest data from the website
-      health_canada_url <- "https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html"
-      content <- tryCatch({
-      xml2::read_html(health_canada_url)
+    # Helper function to check internet connectivity
+    check_internet <- function() {
+      tryCatch({
+        httr::HEAD(
+          url = "https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html",
+          config = httr::timeout(5)
+        )
+        TRUE
       }, error = function(e) {
-       if (verbose) message("Unable to fetch data from Health Canada website: ", e$message)
-       return(NULL)
-       })
+        message("Internet check failed: ", e$message)
+        FALSE
+      })
+    }
 
-      content <- xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
-      tables <- content %>%
-        rvest::html_table(fill = TRUE)
-      second_table <- tables[[2]]
-      second_table_date <- second_table$`Last Updated`[[1]]
+    # Check internet connection only if no_download is FALSE
+    internet_available <- if (!no_download) check_internet() else FALSE
 
-    second_table_date <- as.Date(as.character(second_table_date))
+    # Load latest local data if no_download = TRUE or internet is unavailable
+    if (no_download || !internet_available) {
+      if (verbose) cat("No-download mode or no internet connection detected. Attempting to use the latest available local data.\n")
+
+      # List all files in filelocation matching the expected pattern
+      downloaded_files <- list.files(filelocation, full.names = TRUE)
+      latest_file <- downloaded_files[grep("HealthCanada_Opioid_Table", downloaded_files)]
+
+      if (length(latest_file) > 0) {
+        # Get the most recently modified file
+        latest_file_path <- latest_file[which.max(file.info(latest_file)$mtime)]
+        if (verbose) cat("Loading the latest local file:", latest_file_path, "\n")
+        return(openxlsx::read.xlsx(latest_file_path, sep.names = " "))
+      } else {
+        stop("No local data available. Please disable no_download or ensure local data exists.")
+      }
+    }
+
+    # Fetch the latest data from the website
+    if (verbose) cat("Internet connection detected. Fetching data from the Health Canada website.\n")
+    content <- tryCatch({
+      xml2::read_html("https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html")
+    }, error = function(e) {
+      stop("Unable to fetch data from Health Canada website: ", e$message)
+    })
+
+    # Process data (existing logic for parsing tables and checking dates)
+    tables <- content %>%
+      rvest::html_table(fill = TRUE)
+    second_table <- tables[[2]]
+    second_table_date <- as.Date(as.character(second_table$`Last Updated`[[1]]))
 
     HealthCanada_Opioid_Table_is_old <- TRUE
     HealthCanada_Opioid_Table_files_exist <- FALSE
@@ -915,36 +917,36 @@
 #'   FDA_Opioid_Table <- load_FDA_Opioid_Table(no_download = TRUE)
 #'   head(FDA_Opioid_Table)
 #' @export
-  load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE) {
-    # Suppress warnings for the entire function
-    suppressWarnings({
+load_FDA_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE) {
+  # Suppress warnings for the entire function
+  suppressWarnings({
 
-     if (filelocation == "") {
+    if (filelocation == "") {
       filelocation <- paste0(system.file(package = "OralOpioids"), "/download")
     }
 
-      # Helper function to check internet connectivity
-      check_internet <- function() {
-        tryCatch({
-          httr::HEAD(
-            url = "https://www.fda.gov/drugs/drug-safety-and-availability/drug-data-dashboard",
-            config = httr::timeout(5)
-          )
-          TRUE
-        }, error = function(e) {
-          message("Internet check failed: ", e$message)
-          FALSE
-        })
-      }
+    # Helper function to check internet connectivity
+    check_internet <- function() {
+      tryCatch({
+        httr::HEAD(
+          url = "https://www.fda.gov/drugs/drug-safety-and-availability/drug-data-dashboard",
+          config = httr::timeout(5)
+        )
+        TRUE
+      }, error = function(e) {
+        message("Internet check failed: ", e$message)
+        FALSE
+      })
+    }
 
-      # Check internet connection only if no_download is FALSE
-      internet_available <- TRUE
-      if (!no_download) {
-        internet_available <- check_internet()
-      }
+    # Check internet connection only if no_download is FALSE
+    internet_available <- TRUE
+    if (!no_download) {
+      internet_available <- check_internet()
+    }
 
-      if (!internet_available && !no_download) {
-        if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
+    if (!internet_available && !no_download) {
+      if (verbose) cat("No internet connection. Using the latest available local data if present.\n")
 
 
       # Attempt to load the latest local data
@@ -1371,8 +1373,8 @@
       }
     }
     return(out)
-    })
-  }
+  })
+}
 
 #'Obtain the latest Opioid data
 #'
@@ -1404,8 +1406,8 @@ load_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = 
   ## if the given parameter is part of the candada term list
   if (any(grepl(paste0("^",country,"$"),canada_terms,ignore.case = TRUE))){
     out <- load_HealthCanada_Opioid_Table(filelocation = filelocation,
-                          no_download = no_download,
-                          verbose = verbose)
+                                          no_download = no_download,
+                                          verbose = verbose)
   } else if (any(grepl(paste0("^",country,"$"),usa_terms,ignore.case = TRUE))){
     out <- load_FDA_Opioid_Table(filelocation = filelocation,
                                  no_download = no_download,
@@ -1416,7 +1418,7 @@ load_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = 
     if (verbose) cat(utils::tail(out_msg,1))
   }
 
-return(out)
+  return(out)
 }
 
 
