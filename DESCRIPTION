@@ -24,7 +24,7 @@ Description: Provides details such as Morphine Equivalent Dose (MED),
 URL: https://github.com/ankonahouston/OralOpioids
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports: dplyr, tidyr, readr, purrr, plyr,jsonlite, reshape2, stringr,
         openxlsx, rvest, xml2, utils, rlang,magrittr,httr, writexl
 Suggests: knitr, rmarkdown
