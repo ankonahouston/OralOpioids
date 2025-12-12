@@ -1,3 +1,6 @@
+# OralOpioids 2.0.5
+*Rectified error with load_HealthCanada_Opioid_Table() and changed email for Ankona 
+
 # OralOpioids 2.0.4
 *Added codes so that just in case internet fails there is no error. 
 
