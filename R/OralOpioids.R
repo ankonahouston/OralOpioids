@@ -364,7 +364,8 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
         drug <- merge (drug,schedule, by= "ID")
 
-        drug$Opioid_Query <- ifelse((grepl("NARCOTIC", drug$Schedule)), "1", "0")
+        drug$Opioid_Query <- ifelse(
+          grepl("narcotic", drug$Schedule, ignore.case = TRUE),1,0)
 
         Opioid_Query <- subset (drug, Opioid_Query==1)
 
@@ -373,7 +374,7 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
         Opioid_Query$Drug_ID <- suppressWarnings(as.numeric(Opioid_Query$Drug_ID))
 
-        drug$keep <- ifelse (((grepl("NARCOTIC", drug$Schedule))), "1", "0")
+        drug$keep <- ifelse (grepl("narcotic", drug$Schedule, ignore.case = TRUE), "1", "0")
 
         Opioids <- subset (drug,keep=="1")
         Opioids <- merge (Opioids,route, by= "ID")
