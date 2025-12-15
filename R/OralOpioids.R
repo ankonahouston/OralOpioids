@@ -50,9 +50,9 @@
 
 
 #' @export
-
 load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALSE, verbose = TRUE) {
   suppressWarnings({
+
     # Set default filelocation if not provided
     if (filelocation == "") {
       filelocation <- paste0(system.file(package = "OralOpioids"), "/download")
@@ -62,6 +62,24 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
     if (!dir.exists(filelocation)) {
       dir.create(filelocation, recursive = TRUE)
       if (verbose) cat("Created directory:", filelocation, "\n")
+    }
+
+    # Robust downloader to avoid .rs.downloadFile issues
+    hc_download_zip <- function(url, destfile, verbose = TRUE, timeout_sec = 300) {
+      resp <- httr::RETRY(
+        verb = "GET",
+        url  = url,
+        times = 3,
+        pause_base = 2,
+        terminate_on = c(400, 401, 403, 404),
+        httr::timeout(timeout_sec),
+        httr::user_agent("OralOpioids (R)"),
+        httr::write_disk(destfile, overwrite = TRUE)
+      )
+      sc <- httr::status_code(resp)
+      if (sc >= 400) stop("Health Canada download failed (HTTP ", sc, "): ", url)
+      if (verbose) cat("Downloaded:", basename(destfile), "\n")
+      invisible(destfile)
     }
 
     # Helper function to check internet connectivity
@@ -252,9 +270,15 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         }
 
         tempdownload_location <- tempdir()
-        temp <- tempfile()
+
+        # --- allfiles.zip
+        temp <- tempfile(fileext = ".zip")
         suppressWarnings(dir.create(dirname(temp)))
-        utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",temp)
+        hc_download_zip(
+          "https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip",
+          destfile = temp,
+          verbose = verbose
+        )
         unzip(temp,exdir= paste0(tempdownload_location,"/txtfiles"))
         schedule <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/schedule.txt"),header=F)
         drug <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/drug.txt"),header=F)
@@ -263,11 +287,15 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         ingred <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/ingred.txt"),header=F)
         route <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/route.txt"),header=F)
         form <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/form.txt"),header=F)
-
         unlink(temp,recursive = TRUE)
 
-        temp1 <- tempfile()
-        utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",temp1)
+        # --- allfiles_ap.zip
+        temp1 <- tempfile(fileext = ".zip")
+        hc_download_zip(
+          "https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ap.zip",
+          destfile = temp1,
+          verbose = verbose
+        )
         unzip(temp1,exdir= paste0(tempdownload_location,"/txtfiles"))
         schedule_ap <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/schedule_ap.txt"),header=F)
         drug_ap <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/drug_ap.txt"),header=F)
@@ -276,11 +304,15 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         ingred_ap <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/ingred_ap.txt"),header=F)
         route_ap <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/route_ap.txt"),header=F)
         form_ap <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/form_ap.txt"),header=F)
-
         unlink(temp1,recursive = TRUE)
 
-        temp <- tempfile()
-        utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_dr.zip",temp)
+        # --- allfiles_dr.zip
+        temp <- tempfile(fileext = ".zip")
+        hc_download_zip(
+          "https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_dr.zip",
+          destfile = temp,
+          verbose = verbose
+        )
         unzip(temp,exdir= paste0(tempdownload_location,"/txtfiles"))
         schedule_dr <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/schedule_dr.txt"),header=F)
         drug_dr <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/drug_dr.txt"),header=F)
@@ -289,11 +321,15 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         ingred_dr <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/ingred_dr.txt"),header=F)
         route_dr <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/route_dr.txt"),header=F)
         form_dr <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/form_dr.txt"),header=F)
-
         unlink(temp,recursive = TRUE)
 
-        temp <- tempfile()
-        utils::download.file("https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ia.zip",temp)
+        # --- allfiles_ia.zip
+        temp <- tempfile(fileext = ".zip")
+        hc_download_zip(
+          "https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles_ia.zip",
+          destfile = temp,
+          verbose = verbose
+        )
         unzip(temp,exdir= paste0(tempdownload_location,"/txtfiles"))
         schedule_ia <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/schedule_ia.txt"),header=F)
         drug_ia <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/drug_ia.txt"),header=F)
@@ -302,12 +338,10 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         ingred_ia <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/ingred_ia.txt"),header=F)
         route_ia <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/route_ia.txt"),header=F)
         form_ia <- utils::read.csv(paste0(tempdownload_location,"/txtfiles/form_ia.txt"),header=F)
-
         unlink(temp,recursive = TRUE)
 
         schedule <- rbind (schedule, schedule_ap, schedule_dr, schedule_ia)
         rm (schedule_ap, schedule_dr, schedule_ia)
-
 
         drug <- rbind (drug, drug_ap, drug_dr, drug_ia)
         rm (drug_ap, drug_dr, drug_ia)
@@ -315,51 +349,36 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         drug <- drug[,c(1,4,5)]
         colnames(drug) <- c("ID","Drug_ID","Brand")
 
-
         ther <- rbind (ther, ther_ap, ther_dr, ther_ia)
-
         rm (ther_ap, ther_dr, ther_ia)
 
         ther <- ther [c(1:3)]
-
         colnames (ther) <- c("ID","ATC_Number","ATC")
 
-
-
         status <- rbind (status,status_ap, status_dr, status_ia)
-
         rm (status_ap, status_dr, status_ia)
 
         status <- status [ ,c(1,3,4)]
         colnames (status) <- c("ID","Status","Date")
 
-
         ingred <- rbind (ingred,ingred_ap,ingred_dr, ingred_ia)
-
         rm (ingred_ap,ingred_dr, ingred_ia)
 
         ingred <- ingred [ ,c(1,2,3,5,6,8,9,10)]
         colnames (ingred) <- c("ID","Drug_Code","Ingred","Dose","Value","Base1","Base2","Base3")
 
-
         form <- rbind (form,form_ap,form_dr,form_ia)
-
         rm (form_ap,form_dr,form_ia)
 
         form <- form [ c(1,3)]
         colnames(form) <- c("ID", "Form")
 
-
-
         route <- rbind (route, route_ap,route_dr,route_ia)
         route <- route [, c(1,3)]
         colnames (route) <- c("ID","Route")
-
         rm (route_ap,route_dr,route_ia)
 
-
         schedule <- schedule [,-3]
-
         colnames (schedule) <- c("ID","Schedule")
 
         drug <- merge (drug,schedule, by= "ID")
@@ -469,7 +488,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         status <- reshape2::dcast (status,ID~ ranks, value.var= "Status")
 
         x <- paste ("Status",1:(ncol(status)-1), sep= "_")
-
         colnames (status) <- c("ID",x)
 
         Opioids_1 <- merge (Opioids_1,status, by= "ID")
@@ -501,7 +519,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         colnames(Big_1)[colnames(Big_1) == 'DIN'] <- 'Drug_ID'
 
         Big_1 <- Big_1[,c(2,8)]
-
         Big_1 <- unique (Big_1)
 
         Big_1 <- Big_1%>%
@@ -512,11 +529,8 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         Big_2 <- reshape2::dcast (Big_1,Drug_ID~ ranks, value.var= "MED_per_dispensing_unit",margins="Drug_ID",fun.aggregate = toString)
 
         Big_2$MED_per_dispensing_unit <- ifelse (Big_2$`1`=="Couldn't be calculated","Couldn't be calculated",Big_2$`1`)
-
         Big_2$MED_per_dispensing_unit <- ifelse (is.na (Big_2$MED_per_dispensing_unit),Big_2$`1`,Big_2$MED_per_dispensing_unit)
-
         Big_2 <- Big_2 [,c(1,4)]
-
         Big_1 <- Big_2
 
         Complete <- merge (Big_1,Opioids_2,by= c("Drug_ID"), all.y= TRUE)
@@ -705,7 +719,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         Complete_a <- Complete_a[,c(1:6,9:20)]
 
         Big_Data <- rbind (Total_Incomplete,Complete_a)
-
         Big_Data <- unique(Big_Data)
 
         Big_Data$Drug_ID <- as.character(Big_Data$Drug_ID)
@@ -721,12 +734,10 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
         Previous_Drug_ID <- as.data.frame(Big_1[,1])
         Previous_Drug_ID <- unique(Previous_Drug_ID)
         colnames(Previous_Drug_ID) <- "Drug_ID"
-
         Previous_Drug_ID$Month <- "Previous"
 
         Big_Data_Drug_ID <- Big_Data[,1]
         Big_Data_Drug_ID <- unique(Big_Data_Drug_ID)
-
         Big_Data_Drug_ID$Month <- "Recent"
 
         a <- merge (Big_Data_Drug_ID, Previous_Drug_ID,by= "Drug_ID", all.x= TRUE, all.y= TRUE)
@@ -748,7 +759,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
           dplyr::mutate(rank=order(.data$Drug_ID))
 
         Big_Data2 <- reshape2::dcast(Big_Data1, Drug_ID ~ rank, value.var="Opioid")
-
         colnames(Big_Data2) <- c("Drug_ID","Opioid1","Opioid2")
 
         Big_Data2$Opioid <- ifelse(is.na(Big_Data2$Opioid2),paste(Big_Data2$Opioid1),
@@ -756,7 +766,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
 
         Big_Data1 <- as.data.frame(cbind(Big_Data$Drug_ID, as.character(Big_Data$Route)))
         Big_Data1 <- unique(Big_Data1)
-
         colnames(Big_Data1) <- c("Drug_ID","Route")
 
         Big_Data1 <- Big_Data1 %>%
@@ -765,7 +774,6 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
           dplyr::mutate(rank=order(.data$Drug_ID))
 
         Big_Data3 <- reshape2::dcast(Big_Data1, Drug_ID ~ rank, value.var="Route")
-
         colnames(Big_Data3) <- c("Drug_ID","Route1","Route2")
 
         Big_Data3$Route <- ifelse(is.na(Big_Data3$Route2),paste(Big_Data3$Route1),
@@ -835,9 +843,12 @@ load_HealthCanada_Opioid_Table <- function(filelocation = "", no_download = FALS
                          paste0("Source url used for dosing: ",source_url_dosing), sep="\n")
       }
     }
+
     return(out)
   })
 }
+
+
 #'Obtain the latest Opioid data from the FDA
 #'
 #'\code{load_FDA_Opioid_Table} compares the date of the local FDA_Opioid_Table and compares
